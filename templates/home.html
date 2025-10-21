@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Matusadonha Nature Conservation Learning</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f4f8f7; color: #2e3b2d; overflow-x: hidden; }
+        header {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.2)), 
+                        url('/static/images/mnc.jpg') center/cover no-repeat;
+            height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center;
+        }
+        header h1 { font-size: 3.2em; margin-bottom: 15px; text-shadow: 2px 2px 6px rgba(0,0,0,0.6); }
+        header p { font-size: 1.2em; max-width: 600px; line-height: 1.5; margin-bottom: 20px; }
+        header button { background: #2b7a4b; border: none; color: white; padding: 12px 25px; font-size: 1em; border-radius: 25px; margin: 5px; cursor: pointer; transition: 0.3s; }
+        header button:hover { background: #195834; }
+        nav { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 999; }
+        nav h2 { color: #1f4e2d; }
+        nav ul { list-style: none; display: flex; gap: 20px; }
+        nav ul li a { text-decoration: none; color: #2b7a4b; font-weight: 600; transition: 0.3s; }
+        nav ul li a:hover { color: #195834; }
+        section { padding: 70px 20px; text-align: center; }
+        .section-title { font-size: 2.2em; color: #2b7a4b; margin-bottom: 25px; }
+        .about, .programs, .community { max-width: 900px; margin: 0 auto; line-height: 1.6; font-size: 1.1em; }
+        footer { background: #2b7a4b; color: white; text-align: center; padding: 25px 0; margin-top: 50px; }
+        .modal { display: none; position: fixed; z-index: 1000; padding-top: 100px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); }
+        .modal-content { background-color: #fefefe; margin: auto; padding: 30px; border: 1px solid #888; width: 90%; max-width: 400px; border-radius: 12px; }
+        .modal-content h3 { margin-bottom: 15px; color: #2b7a4b; }
+        .modal-content input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; }
+        .modal-content button { width: 100%; background: #2b7a4b; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; }
+        .close { color: #aaa; float: right; font-size: 22px; cursor: pointer; }
+        .close:hover { color: black; }
+        @media(max-width: 768px) { header h1 { font-size: 2.2em; } nav ul { display: none; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <h2>Matusadonha Nature Conservation Learning</h2>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#programs">Programs</a></li>
+            <li><a href="#community">Community</a></li>
+            <li><a href="#" onclick="openModal('loginModal')">Sign In</a></li>
+            <li><a href="#" onclick="openModal('signupModal')">Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Empowering Conservation Leaders</h1>
+        <p>Join the Matusadonha Nature Conservation Learning Portal to build leadership, community engagement, and environmental stewardship.</p>
+        <button onclick="openModal('loginModal')">Sign In</button>
+        <button onclick="openModal('signupModal')">Get Started</button>
+    </header>
+
+    <section id="about">
+        <h2 class="section-title">About the Platform</h2>
+        <div class="about">
+            <p>The Matusadonha Nature Conservation Learning Platform empowers individuals in conservation, leadership, and community development through blended learning experiences.</p>
+            <img src="/static/images/mnc.jpeg" alt="Matusadonha" style="max-width:100%; margin-top:20px; border-radius:12px;">
+        </div>
+    </section>
+
+    <section id="programs" style="background:#eaf4ee;">
+        <h2 class="section-title">Our Programs</h2>
+        <div class="programs">
+            <p>Modules: Community Engagement, Conflict Resolution, Leadership Styles, Digital Skills, Supervision.</p>
+            <img src="/static/images/mnc.jpg" alt="Programs" style="max-width:100%; margin-top:20px; border-radius:12px;">
+        </div>
+    </section>
+
+    <section id="community">
+        <h2 class="section-title">Community Impact</h2>
+        <div class="community">
+            <p>Collaborate with peers and mentors. Share success stories and contribute to sustainable practices that protect Matusadonha’s ecosystem and wildlife.</p>
+            <img src="/static/images/mnc.jpeg" alt="Community" style="max-width:100%; margin-top:20px; border-radius:12px;">
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Matusadonha Nature Conservation Learning</p>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h3>Sign In</h3>
+            <input type="text" placeholder="Username or Company ID" required>
+            <input type="password" placeholder="Password" required>
+            <button type="button" onclick="redirectPortal()">Sign In</button>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signupModal')">&times;</span>
+            <h3>Sign Up</h3>
+            <input type="text" placeholder="Username" required>
+            <input type="text" placeholder="Full Name" required>
+            <input type="email" placeholder="Email Address" required>
+            <input type="text" placeholder="Company ID (if any)">
+            <input type="password" placeholder="Password" required>
+            <input type="password" placeholder="Confirm Password" required>
+            <button type="button" onclick="redirectPortal()">Register</button>
+        </div>
+    </div>
+
+    <script>
+        function openModal(id) { document.getElementById(id).style.display = 'block'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        // Mock redirect to portal
+        function redirectPortal() {
+            window.location.href = "/portal/"; // redirect to portal page
+        }
+
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => { if (event.target === modal) modal.style.display = 'none'; });
+        }
+    </script>
+</body>
+</html>

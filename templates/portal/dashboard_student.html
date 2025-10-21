@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | Matusadonha Nature Conservation Learning</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f4f8f7; color: #2e3b2d; line-height: 1.6; transition: background-color 0.3s, color 0.3s; }
+        body.dark-mode { background-color: #1a1a1a; color: #e0e0e0; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(rgba(43, 122, 75, 0.9), rgba(43, 122, 75, 0.7)), url('https://via.placeholder.com/1920x400?text=Student+Dashboard') center/cover;
+            color: white; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .user-profile { display: flex; align-items: center; gap: 0.5rem; }
+        .user-initials { width: 40px; height: 40px; border-radius: 50%; background: #2b7a4b; color: white; display: flex; align-items: center; justify-content: center; font-size: 1em; font-weight: 600; }
+        body.dark-mode .user-initials { background: #4caf50; }
+        .user-profile span { font-weight: 600; font-size: 1.2em; }
+        .nav { display: flex; gap: 1.5rem; align-items: center; }
+        .nav a { color: white; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        .nav a:hover { color: #eaf8ef; }
+        .theme-toggle { cursor: pointer; font-size: 1.2em; margin-left: 1rem; }
+        .mobile-menu { display: none; cursor: pointer; font-size: 1.5em; }
+
+        /* Main Dashboard */
+        .main-content { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        
+        /* Stats Cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: white; padding: 1.5rem; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); }
+        body.dark-mode .stat-card { background: #252525; }
+        .stat-icon { font-size: 2.5em; color: #2b7a4b; margin-bottom: 0.5rem; }
+        body.dark-mode .stat-icon { color: #4caf50; }
+        .stat-number { font-size: 2em; font-weight: 700; color: #2b7a4b; }
+        body.dark-mode .stat-number { color: #4caf50; }
+        .stat-label { font-size: 0.9em; color: #666; }
+        body.dark-mode .stat-label { color: #aaa; }
+        .streak-badge { background: #ff9800; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8em; font-weight: 600; }
+
+        /* Progress Overview */
+        .progress-overview { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+        body.dark-mode .progress-card { background: #252525; }
+        .progress-card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .progress-circle { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(#2b7a4b 0deg 234deg, #ddd 234deg 360deg); margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; position: relative; }
+        body.dark-mode .progress-circle { background: conic-gradient(#4caf50 0deg 234deg, #444 234deg 360deg); }
+        .progress-inner { width: 80px; height: 80px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2em; }
+        body.dark-mode .progress-inner { background: #333; }
+        .grade-card { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem; }
+        .grade-item { text-align: center; padding: 0.5rem; border-radius: 8px; }
+        .grade-a { background: #4caf50; color: white; }
+        .grade-b { background: #8bc34a; color: white; }
+        .grade-c { background: #ff9800; color: white; }
+        .grade-d { background: #f44336; color: white; }
+        .grade-f { background: #757575; color: white; }
+
+        /* Certificates & Badges */
+        .achievements-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .certificate-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: transform 0.3s; cursor: pointer; }
+        body.dark-mode .certificate-card { background: #252525; }
+        .certificate-card:hover { transform: scale(1.02); }
+        .cert-image { height: 150px; background: linear-gradient(45deg, #2b7a4b, #4caf50); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5em; }
+        .cert-info { padding: 1rem; }
+        .badge-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-top: 1rem; }
+        .badge { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2em; color: white; cursor: pointer; transition: transform 0.3s; }
+        .badge:hover { transform: scale(1.1); }
+        .badge-gold { background: #ffd700; }
+        .badge-silver { background: #c0c0c0; }
+        .badge-bronze { background: #cd7f32; }
+        .badge-green { background: #4caf50; }
+        .badge-blue { background: #2196f3; }
+
+        /* Module Matrix */
+        .module-matrix { background: white; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        body.dark-mode .module-matrix { background: #252525; }
+        .matrix-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        .matrix-table th, .matrix-table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #eee; }
+        body.dark-mode .matrix-table th, body.dark-mode .matrix-table td { border-bottom: 1px solid #444; }
+        .matrix-table th { background: #f5f5f5; font-weight: 600; color: #2b7a4b; }
+        body.dark-mode .matrix-table th { background: #333; }
+        .status-completed { background: #4caf50; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.8em; }
+        .status-pending { background: #ff9800; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.8em; }
+        .status-failed { background: #f44336; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.8em; }
+
+        /* Timeline */
+        .timeline { background: white; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        body.dark-mode .timeline { background: #252525; }
+        .timeline-item { display: flex; align-items: center; margin-bottom: 1rem; padding: 1rem; background: #f9f9f9; border-radius: 10px; }
+        body.dark-mode .timeline-item { background: #333; }
+        .timeline-icon { width: 40px; height: 40px; border-radius: 50%; background: #2b7a4b; color: white; display: flex; align-items: center; justify-content: center; margin-right: 1rem; }
+        body.dark-mode .timeline-icon { background: #4caf50; }
+        .score-badge { background: #4caf50; color: white; padding: 0.25rem 0.75rem; border-radius: 15px; font-weight: 600; }
+
+        /* Sidebar */
+        .dashboard-sidebar { position: fixed; right: 2rem; top: 120px; width: 300px; background: white; padding: 1.5rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); height: fit-content; }
+        body.dark-mode .dashboard-sidebar { background: #252525; }
+        .deadline-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: #fff3e0; margin-bottom: 0.5rem; border-radius: 8px; }
+        body.dark-mode .deadline-item { background: #333; }
+        .recommendation { background: #e8f5e8; padding: 1rem; border-radius: 10px; margin-top: 1rem; }
+        body.dark-mode .recommendation { background: #2d4d2d; }
+
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 1rem; }
+            .nav { display: none; }
+            .mobile-menu { display: block; }
+            .progress-overview { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .dashboard-sidebar { position: static; width: 100%; margin-top: 2rem; }
+            .grade-card { grid-template-columns: 1fr; }
+            .badge-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @keyframes slideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .slide-in { animation: slideIn 0.5s ease-out; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="light-mode slide-in">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="user-profile">
+                <div class="user-initials">JD</div>
+                <span>Jane Doe</span>
+            </div>
+            <nav class="nav">
+                <a href="{% url 'portal_home' %}"><i class="fas fa-arrow-left"></i> Courses</a>
+                <a href="#" onclick="exportReport()" style="margin-left: auto;"><i class="fas fa-download"></i> Export Report</a>
+                <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </nav>
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </div>
+            <div class="mobile-menu" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard Content -->
+    <main class="main-content">
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-chart-line stat-icon"></i>
+                <div class="stat-number">78%</div>
+                <div class="stat-label">Overall Progress</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-trophy stat-icon"></i>
+                <div class="stat-number">4.2</div>
+                <div class="stat-label">GPA</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-certificate stat-icon"></i>
+                <div class="stat-number">2</div>
+                <div class="stat-label">Certificates</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-fire stat-icon"></i>
+                <div class="stat-number">7<span class="streak-badge">Day Streak</span></div>
+                <div class="stat-label">Learning Streak</div>
+            </div>
+        </div>
+
+        <!-- Progress Overview -->
+        <div class="progress-overview">
+            <div class="progress-card">
+                <h3 style="color: #2b7a4b; margin-bottom: 1rem;">Course Progress</h3>
+                <div class="progress-circle">
+                    <div class="progress-inner">78%</div>
+                </div>
+                <p style="text-align: center; margin-top: 0.5rem;">5/5 Modules Started</p>
+                <div class="grade-card">
+                    <div class="grade-item grade-a">A: 2</div>
+                    <div class="grade-item grade-b">B: 2</div>
+                    <div class="grade-item grade-c">C: 1</div>
+                </div>
+            </div>
+            <div class="progress-card">
+                <h3 style="color: #2b7a4b; margin-bottom: 1rem;">Class Performance</h3>
+                <p style="font-size: 1.1em; margin-bottom: 1rem;"><i class="fas fa-arrow-up"></i> You're outperforming 85% of class</p>
+                <div style="display: flex; justify-content: space-around; margin-top: 1rem;">
+                    <div><strong>85%</strong><br><small>Class Avg</small></div>
+                    <div><strong>92%</strong><br><small>Top 10%</small></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certificates & Badges -->
+        <div class="achievements-grid">
+            <div class="certificate-card">
+                <div class="cert-image">
+                    <i class="fas fa-certificate" style="font-size: 2em;"></i>
+                </div>
+                <div class="cert-info">
+                    <h4>Module 1 Certificate</h4>
+                    <p>Score: 95% | Issued: Oct 5, 2025</p>
+                    <button onclick="downloadCert('module1')" style="background: #2b7a4b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer;">Download PDF</button>
+                </div>
+            </div>
+            <div class="certificate-card">
+                <div class="cert-image">
+                    <i class="fas fa-certificate" style="font-size: 2em;"></i>
+                </div>
+                <div class="cert-info">
+                    <h4>Module 2 Certificate</h4>
+                    <p>Score: 88% | Issued: Oct 12, 2025</p>
+                    <button onclick="downloadCert('module2')" style="background: #2b7a4b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer;">Download PDF</button>
+                </div>
+            </div>
+            <div class="certificate-card" style="grid-column: span 2;">
+                <div class="cert-info" style="text-align: center;">
+                    <h4>Badges Earned</h4>
+                    <div class="badge-grid">
+                        <div class="badge badge-gold" title="Module 1 Mastered"><i class="fas fa-star"></i></div>
+                        <div class="badge badge-gold" title="Module 2 Mastered"><i class="fas fa-star"></i></div>
+                        <div class="badge badge-silver" title="Quiz Ace"><i class="fas fa-brain"></i></div>
+                        <div class="badge badge-green" title="7-Day Streak"><i class="fas fa-fire"></i></div>
+                        <div class="badge badge-blue" title="Active Participant"><i class="fas fa-comments"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Module Completion Matrix -->
+        <div class="module-matrix">
+            <h3 style="color: #2b7a4b; margin-bottom: 1rem;">Module Completion Status</h3>
+            <table class="matrix-table">
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        <th>Progress</th>
+                        <th>Score</th>
+                        <th>Status</th>
+                        <th>Completed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1. Introduction</td>
+                        <td>100%</td>
+                        <td>95%</td>
+                        <td><span class="status-completed">Completed</span></td>
+                        <td>Oct 5, 2025</td>
+                    </tr>
+                    <tr>
+                        <td>2. Building Trust</td>
+                        <td>100%</td>
+                        <td>88%</td>
+                        <td><span class="status-completed">Completed</span></td>
+                        <td>Oct 12, 2025</td>
+                    </tr>
+                    <tr>
+                        <td>3. Conflict Resolution</td>
+                        <td>60%</td>
+                        <td>76%</td>
+                        <td><span class="status-pending">In Progress</span></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>4. Sustainable Practices</td>
+                        <td>20%</td>
+                        <td>-</td>
+                        <td><span class="status-pending">Pending</span></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>5. Case Studies</td>
+                        <td>0%</td>
+                        <td>-</td>
+                        <td><span class="status-pending">Not Started</span></td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 1rem; color: #666; font-size: 0.9em;">
+                <i class="fas fa-exclamation-triangle" style="color: #ff9800;"></i>
+                Complete Modules 3-5 to earn final certification!
+            </p>
+        </div>
+
+        <!-- Quiz Results Timeline -->
+        <div class="timeline">
+            <h3 style="color: #2b7a4b; margin-bottom: 1rem;">Quiz Performance History</h3>
+            <div class="timeline-item">
+                <div class="timeline-icon"><i class="fas fa-check"></i></div>
+                <div>
+                    <strong>Quiz 1</strong> - Oct 5, 2025
+                    <div class="score-badge">95%</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-icon"><i class="fas fa-check"></i></div>
+                <div>
+                    <strong>Quiz 2</strong> - Oct 12, 2025
+                    <div class="score-badge">88%</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-icon" style="background: #ff9800;"><i class="fas fa-clock"></i></div>
+                <div>
+                    <strong>Quiz 3</strong> - Due Oct 25, 2025
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Dashboard Sidebar -->
+    <aside class="dashboard-sidebar">
+        <h4 style="color: #2b7a4b; margin-bottom: 1rem;">Upcoming Deadlines</h4>
+        <div class="deadline-item">
+            <span>Quiz 3</span>
+            <span style="color: #f44336;">Oct 25, 2025</span>
+        </div>
+        <div class="deadline-item">
+            <span>Module 3</span>
+            <span style="color: #ff9800;">Oct 28, 2025</span>
+        </div>
+        <div class="deadline-item">
+            <span>Final Project</span>
+            <span style="color: #2196f3;">Nov 15, 2025</span>
+        </div>
+
+        <div class="recommendation">
+            <h4 style="color: #2b7a4b; margin-bottom: 0.5rem;">Recommended Next</h4>
+            <p><i class="fas fa-play-circle"></i> Complete Module 3 (40% to go)</p>
+            <p><i class="fas fa-tasks"></i> Take Quiz 3</p>
+        </div>
+    </aside>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+            const icon = document.querySelector('.theme-toggle i');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+        }
+
+        function downloadCert(module) {
+            alert(`Downloading ${module} certificate...`);
+            // Implement PDF download
+        }
+
+        function exportReport() {
+            alert('Exporting progress report PDF...');
+            // Implement report export
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '{% url "login" %}';
+            }
+        }
+
+        function toggleMobileMenu() {
+            const nav = document.querySelector('.nav');
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Initialize streak animation
+        window.onload = function() {
+            const streakElements = document.querySelectorAll('.streak-badge');
+            streakElements.forEach(el => {
+                el.style.animation = 'pulse 2s infinite';
+            });
+        };
+    </script>
+</body>
+</html>

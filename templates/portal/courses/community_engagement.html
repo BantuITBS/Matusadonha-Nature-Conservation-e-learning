@@ -1,0 +1,995 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Engagement | Matusadonha Nature Conservation Learning</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f4f8f7; color: #2e3b2d; line-height: 1.6; transition: background-color 0.3s, color 0.3s; }
+        body.dark-mode { background-color: #1a1a1a; color: #e0e0e0; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(rgba(43, 122, 75, 0.9), rgba(43, 122, 75, 0.7)), url('https://via.placeholder.com/1920x400?text=Community+Engagement+Banner') center/cover;
+            color: white; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .user-profile { display: flex; align-items: center; gap: 0.5rem; }
+        .user-initials { width: 32px; height: 32px; border-radius: 50%; background: #2b7a4b; color: white; display: flex; align-items: center; justify-content: center; font-size: 1em; font-weight: 500; }
+        body.dark-mode .user-initials { background: #4caf50; }
+        .user-profile span { font-weight: 500; font-size: 1.1em; }
+        .nav { display: flex; gap: 1.5rem; align-items: center; }
+        .nav a { color: white; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        .nav a:hover { color: #eaf8ef; }
+        .role-switcher { display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px; }
+        .role-switcher select { background: transparent; color: white; border: none; font-size: 0.9em; }
+        .theme-toggle { cursor: pointer; font-size: 1.2em; margin-left: 1rem; }
+        .mobile-menu { display: none; cursor: pointer; font-size: 1.5em; }
+        
+        /* Light Mode */
+        body.light-mode .course-hero { background: #f5f5f5; }
+        body.light-mode .lecturer-section { background: #ffffff; }
+        body.light-mode .action-card { background: #f0f0f0; }
+        body.light-mode .module-item { background: #ffffff; border: 1px solid #ddd; }
+        body.light-mode .module-item:hover { background: #f5f5f5; }
+        body.light-mode .sidebar { background: #ffffff; border: 1px solid #ddd; }
+        body.light-mode .chat-preview { background: #f9f9f9; border: 1px solid #ddd; }
+        body.light-mode .video-card { background: #ffffff; }
+        body.light-mode .quiz-container { background: #ffffff; border: 1px solid #ddd; }
+        body.light-mode .modal-content { background: #ffffff; border: 1px solid #ddd; }
+        body.light-mode .ai-assistant { background: #ffffff; }
+        body.light-mode .ai-response { background: #f9f9f9; }
+        body.light-mode .task-container { background: #ffffff; border: 1px solid #ddd; }
+        body.light-mode .task-table th { background: #f5f5f5; }
+
+        /* Dark Mode */
+        body.dark-mode .header { background: linear-gradient(rgba(20, 60, 40, 0.9), rgba(20, 60, 40, 0.7)), url('https://via.placeholder.com/1920x400?text=Community+Engagement+Banner') center/cover; }
+        body.dark-mode .course-hero { background: #2a2a2a; }
+        body.dark-mode .lecturer-section { background: #252525; }
+        body.dark-mode .action-card { background: #333333; }
+        body.dark-mode .action-card:hover { background: #3a3a3a; }
+        body.dark-mode .module-item { background: #252525; border: 1px solid #444; }
+        body.dark-mode .module-item:hover { background: #333333; }
+        body.dark-mode .sidebar { background: #252525; border: 1px solid #444; }
+        body.dark-mode .chat-preview { background: #333333; border: 1px solid #444; }
+        body.dark-mode .video-card { background: #252525; }
+        body.dark-mode .quiz-container { background: #252525; border: 1px solid #444; }
+        body.dark-mode .modal-content { background: #252525; border: 1px solid #444; }
+        body.dark-mode .ai-assistant { background: #252525; }
+        body.dark-mode .ai-response { background: #333333; }
+        body.dark-mode .task-container { background: #252525; border: 1px solid #444; }
+        body.dark-mode .task-table th { background: #333333; }
+
+        /* Course Hero Section */
+        .course-hero {
+            background: #eaf4ee; padding: 3.2rem 2rem; text-align: center; max-width: 1200px; margin: 3px auto 0; }
+        .course-hero h1 { font-size: 2.8em; color: #2b7a4b; margin-bottom: 1rem; }
+        body.dark-mode .course-hero h1 { color: #4caf50; }
+        .course-hero p { font-size: 1.2em; max-width: 800px; margin: 0 auto 2rem; }
+        .progress-bar { background: #ddd; height: 10px; border-radius: 5px; overflow: hidden; margin: 2rem auto; width: 300px; }
+        .progress-fill { background: #2b7a4b; height: 100%; transition: width 0.3s; width: 65%; }
+        body.dark-mode .progress-bar { background: #444; }
+        body.dark-mode .progress-fill { background: #4caf50; }
+        .lecturer-section { background: white; padding: 2rem; margin: 2rem auto; max-width: 1200px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: none; }
+        .lecturer-section.active { display: block; }
+        .lecturer-section h2 { color: #2b7a4b; margin-bottom: 1.5rem; }
+        body.dark-mode .lecturer-section h2 { color: #4caf50; }
+        .lecturer-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; justify-items: center; }
+        .action-card { background: #f9f9f9; padding: 1.5rem; border-radius: 10px; text-align: center; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; width: 100%; max-width: 300px; }
+        .action-card:hover { transform: translateY(-5px); box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .action-card i { font-size: 2.5em; color: #2b7a4b; margin-bottom: 1rem; }
+        body.dark-mode .action-card i { color: #4caf50; }
+
+        /* Main Content */
+        .main-content { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .course-overview { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; margin-bottom: 3rem; align-items: start; }
+        .overview-left h2 { color: #2b7a4b; margin-bottom: 1rem; }
+        body.dark-mode .overview-left h2 { color: #4caf50; }
+        .module-list { list-style: none; }
+        .module-item { background: white; margin-bottom: 1rem; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); cursor: pointer; transition: background 0.3s; }
+        .module-item:hover { background: #f0f8f5; }
+        body.dark-mode .module-item:hover { background: #333333; }
+        .module-item.completed { border-left: 5px solid #2b7a4b; }
+        body.dark-mode .module-item.completed { border-left: 5px solid #4caf50; }
+        .module-item i { color: #2b7a4b; margin-right: 1rem; }
+        body.dark-mode .module-item i { color: #4caf50; }
+        .sidebar { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .sidebar h3 { color: #2b7a4b; margin-bottom: 1rem; }
+        body.dark-mode .sidebar h3 { color: #4caf50; }
+        .chat-preview { height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 1rem; border-radius: 5px; margin-bottom: 1rem; background: #f9f9f9; }
+        body.dark-mode .chat-preview { background: #333333; border: 1px solid #444; }
+        .chat-message { display: flex; align-items: flex-start; margin-bottom: 1rem; font-size: 0.9em; }
+        .chat-message img { width: 30px; height: 30px; border-radius: 50%; margin-right: 0.5rem; }
+        .chat-message.own { justify-content: flex-end; }
+        .chat-message.own .message-content { background: #2b7a4b; color: white; }
+        body.dark-mode .chat-message.own .message-content { background: #4caf50; }
+        .message-content { background: #e0e0e0; padding: 0.5rem 1rem; border-radius: 10px; max-width: 70%; }
+        body.dark-mode .message-content { background: #444; }
+        .message-content span { display: block; font-size: 0.8em; color: #666; }
+        body.dark-mode .message-content span { color: #aaa; }
+
+        /* AI Course Assistant */
+        .ai-assistant {
+            background: white; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        .ai-input { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+        .ai-input textarea {
+            flex: 1; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; resize: none; height: 60px;
+        }
+        body.dark-mode .ai-input textarea { border: 1px solid #444; background: #333; color: #e0e0e0; }
+        .ai-input button { background: #2b7a4b; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; }
+        body.dark-mode .ai-input button { background: #4caf50; }
+        .ai-input button:hover { background: #195834; }
+        body.dark-mode .ai-input button:hover { background: #388e3c; }
+        .ai-response { background: #f9f9f9; padding: 1rem; border-radius: 8px; min-height: 100px; }
+        body.dark-mode .ai-response { background: #333333; }
+
+        /* Task Sections */
+        .task-container { background: white; padding: 2rem; border-radius: 10px; margin: 2rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .task-container h2 { color: #2b7a4b; margin-bottom: 1rem; }
+        body.dark-mode .task-container h2 { color: #4caf50; }
+        .task-table { width: 100%; border-collapse: collapse; }
+        .task-table th, .task-table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #ddd; }
+        body.dark-mode .task-table th, body.dark-mode .task-table td { border-bottom: 1px solid #444; }
+        .task-table th { background: #f5f5f5; font-weight: 600; color: #2b7a4b; }
+        body.dark-mode .task-table th { background: #333333; color: #4caf50; }
+        .task-status.completed { background: #4caf50; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.8em; }
+        .task-status.upcoming { background: #ff9800; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.8em; }
+        .task-status.overdue { background: #f44336; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.8em; }
+        .task-table button { background: #2b7a4b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; }
+        body.dark-mode .task-table button { background: #4caf50; }
+        .task-table button:hover { background: #195834; }
+        body.dark-mode .task-table button:hover { background: #388e3c; }
+
+        /* Interactive Elements */
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0; justify-items: center; }
+        .video-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.3s; width: 100%; max-width: 350px; }
+        .video-card:hover { transform: scale(1.02); }
+        .video-card select { width: 100%; padding: 0.5rem; margin: 1rem 0; border: 1px solid #ddd; border-radius: 5px; }
+        body.dark-mode .video-card select { border: 1px solid #444; background: #333; color: #e0e0e0; }
+        .video-info { padding: 1rem; }
+        .quiz-container { background: white; padding: 2rem; border-radius: 10px; margin: 2rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .quiz-question { margin-bottom: 1.5rem; }
+        .quiz-option { display: block; padding: 0.5rem; margin: 0.5rem 0; cursor: pointer; border: 1px solid #ddd; border-radius: 5px; transition: background 0.3s; }
+        body.dark-mode .quiz-option { border: 1px solid #444; }
+        .quiz-option:hover { background: #eaf4ee; }
+        body.dark-mode .quiz-option:hover { background: #333333; }
+        .quiz-option.selected { background: #2b7a4b; color: white; }
+        body.dark-mode .quiz-option.selected { background: #4caf50; }
+
+        /* Modals */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
+        .modal-content { background: white; margin: 5% auto; padding: 2rem; border-radius: 15px; width: 90%; max-width: 800px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: slideIn 0.3s; }
+        .module-modal-content { max-width: 1000px; }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close:hover { color: #2b7a4b; }
+        body.dark-mode .close:hover { color: #4caf50; }
+        .modal form { display: flex; flex-direction: column; gap: 1rem; }
+        .modal input, .modal textarea, .modal select { padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; }
+        body.dark-mode .modal input, body.dark-mode .modal textarea, body.dark-mode .modal select { border: 1px solid #444; background: #333; color: #e0e0e0; }
+        .modal button { background: #2b7a4b; color: white; padding: 0.75rem; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
+        body.dark-mode .modal button { background: #4caf50; }
+        .modal button:hover { background: #195834; }
+        body.dark-mode .modal button:hover { background: #388e3c; }
+        .chat-input { display: flex; align-items: center; gap: 0.5rem; }
+        .chat-input textarea { flex: 1; resize: none; height: 40px; }
+        .chat-input button, .chat-input label { background: #2b7a4b; color: white; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; }
+        body.dark-mode .chat-input button, body.dark-mode .chat-input label { background: #4caf50; }
+        .chat-input input[type="file"] { display: none; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 1rem; align-items: flex-start; }
+            .nav { display: none; flex-direction: column; width: 100%; background: rgba(0,0,0,0.8); padding: 1rem; }
+            .nav.active { display: flex; }
+            .mobile-menu { display: block; align-self: flex-end; }
+            .course-hero h1 { font-size: 2em; }
+            .course-overview { grid-template-columns: 1fr; }
+            .lecturer-actions { grid-template-columns: 1fr; }
+            .video-card, .action-card { max-width: 100%; }
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="user-profile">
+                <div class="user-initials">JD</div>
+                <span>Jane Doe</span>
+            </div>
+            <nav class="nav">
+                <a href="{% url 'portal_home' %}"><i class="fas fa-arrow-left"></i> Back</a>
+                <a href="{% url 'dashboard_student' %}"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="#" onclick="logout()" style="margin-left: auto;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </nav>
+            <div class="role-switcher">
+                <i class="fas fa-user"></i>
+                <select id="roleSelect" onchange="switchRole()">
+                    <option value="student">Student</option>
+                    <option value="lecturer">Lecturer</option>
+                </select>
+            </div>
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </div>
+            <div class="mobile-menu" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></div>
+        </div>
+    </header>
+
+    <!-- Course Hero Section -->
+    <section class="course-hero">
+        <h1>Community Engagement in Conservation</h1>
+        <p>Learn how to build strong relationships with local communities to foster sustainable environmental practices and leadership in nature conservation.</p>
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+    </section>
+
+    <!-- Lecturer Section -->
+    <section id="lecturerSection" class="lecturer-section">
+        <h2>Lecturer Dashboard</h2>
+        <div class="lecturer-actions">
+            <div class="action-card" onclick="openModal('addMaterialModal')">
+                <i class="fas fa-upload"></i>
+                <h3>Add Course Material</h3>
+                <p>Upload videos, documents, or resources for students.</p>
+            </div>
+            <div class="action-card" onclick="openModal('createTestModal')">
+                <i class="fas fa-edit"></i>
+                <h3>Create Test</h3>
+                <p>Design quizzes and assessments for learner evaluation.</p>
+            </div>
+            <div class="action-card" onclick="openModal('markTestsModal')">
+                <i class="fas fa-check-circle"></i>
+                <h3>Mark Tests</h3>
+                <p>Review and grade student submissions.</p>
+            </div>
+            <div class="action-card" onclick="openModal('groupChatModal')">
+                <i class="fas fa-comments"></i>
+                <h3>Group Chat</h3>
+                <p>Engage with all learners in real-time discussions.</p>
+            </div>
+            <div class="action-card" onclick="openModal('individualChatModal')">
+                <i class="fas fa-user-friends"></i>
+                <h3>Individual Chat</h3>
+                <p>Provide personalized feedback to specific students.</p>
+            </div>
+            <div class="action-card" onclick="openModal('analyticsModal')">
+                <i class="fas fa-chart-bar"></i>
+                <h3>Analytics</h3>
+                <p>View student progress and engagement metrics.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="course-overview">
+            <div class="overview-left">
+                <h2>Course Modules</h2>
+                <ul class="module-list">
+                    <li class="module-item completed" onclick="openModuleModal('module1')"><i class="fas fa-check-circle"></i> Introduction to Community Engagement</li>
+                    <li class="module-item completed" onclick="openModuleModal('module2')"><i class="fas fa-check-circle"></i> Building Trust with Stakeholders</li>
+                    <li class="module-item" onclick="openModuleModal('module3')"><i class="fas fa-play-circle"></i> Conflict Resolution Strategies</li>
+                    <li class="module-item" onclick="openModuleModal('module4')"><i class="fas fa-play-circle"></i> Sustainable Practice Implementation</li>
+                    <li class="module-item" onclick="openModuleModal('module5')"><i class="fas fa-play-circle"></i> Case Studies and Projects</li>
+                </ul>
+            </div>
+            <aside class="sidebar">
+                <h3>CourseChat</h3>
+                <div class="chat-preview" id="chatPreview">
+                    <div class="chat-message">
+                        <img src="https://via.placeholder.com/30?text=John" alt="John Avatar">
+                        <div class="message-content">
+                            Can anyone share resources on community trust-building?
+                            <span>John Smith • 2h ago</span>
+                        </div>
+                    </div>
+                    <div class="chat-message own">
+                        <div class="message-content">
+                            I found a great paper on stakeholder engagement! Check the resources section.
+                            <span>You • 1h ago</span>
+                        </div>
+                        <img src="https://via.placeholder.com/30?text=You" alt="Your Avatar">
+                    </div>
+                    <div class="chat-message">
+                        <img src="https://via.placeholder.com/30?text=Sarah" alt="Sarah Avatar">
+                        <div class="message-content">
+                            Thanks! Also, the lecture on conflict resolution was super insightful.
+                            <span>Sarah Lee • 45m ago</span>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="openModal('chatModal')">Open CourseChat</button>
+            </aside>
+        </div>
+
+        <!-- AI Course Assistant -->
+        <section class="ai-assistant">
+            <h2>AI Course Assistant</h2>
+            <div class="ai-input">
+                <textarea placeholder="Ask about course progress, assignments, or resources (e.g., 'Show my progress in Community Engagement')"></textarea>
+                <button onclick="queryAI()">Submit</button>
+            </div>
+            <div class="ai-response" id="aiResponse">AI Response will appear here...</div>
+        </section>
+
+        <!-- Recorded Lessons -->
+        <section>
+            <h2>Recorded Lessons</h2>
+            <div class="video-grid">
+                <div class="video-card">
+                    <select onchange="loadContent(this.value)">
+                        <option value="">Select Content</option>
+                        <option value="video1">Video: Introduction (45 min)</option>
+                        <option value="pdf1">PDF: Community Engagement Guide</option>
+                        <option value="slides1">Slides: Key Concepts</option>
+                    </select>
+                    <div class="video-info">
+                        <h4>Lesson 1: Introduction</h4>
+                        <p>Multiple formats available</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <select onchange="loadContent(this.value)">
+                        <option value="">Select Content</option>
+                        <option value="video2">Video: Strategies (30 min)</option>
+                        <option value="pdf2">PDF: Strategy Case Studies</option>
+                        <option value="slides2">Slides: Strategy Overview</option>
+                    </select>
+                    <div class="video-info">
+                        <h4>Lesson 2: Strategies</h4>
+                        <p>Multiple formats available</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section class="quiz-container">
+            <h2>Community Engagement Quiz</h2>
+            <div class="quiz-question">
+                <p>1. What is the first step in community engagement?</p>
+                <label class="quiz-option" onclick="selectOption(this, 'q1')">A) Building Trust</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q1')">B) Conflict Resolution</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q1')">C) Implementation</label>
+            </div>
+            <div class="quiz-question">
+                <p>2. Which approach fosters long-term community support?</p>
+                <label class="quiz-option" onclick="selectOption(this, 'q2')">A) Top-down decision-making</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q2')">B) Inclusive dialogue</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q2')">C) Financial incentives only</label>
+            </div>
+            <div class="quiz-question">
+                <p>3. What is a key barrier to effective community engagement?</p>
+                <label class="quiz-option" onclick="selectOption(this, 'q3')">A) Clear communication</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q3')">B) Cultural insensitivity</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q3')">C) Regular meetings</label>
+            </div>
+            <div class="quiz-question">
+                <p>4. How can technology aid community engagement?</p>
+                <label class="quiz-option" onclick="selectOption(this, 'q4')">A) By replacing in-person interaction</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q4')">B) By facilitating communication</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q4')">C) By limiting participation</label>
+            </div>
+            <div class="quiz-question">
+                <p>5. What is a successful outcome of community engagement?</p>
+                <label class="quiz-option" onclick="selectOption(this, 'q5')">A) Short-term project completion</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q5')">B) Sustainable community ownership</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q5')">C) Increased funding</label>
+            </div>
+            <button onclick="submitQuiz()">Submit Quiz</button>
+        </section>
+
+        <!-- Tests Section -->
+        <section class="task-container">
+            <h2>Tests</h2>
+            <table class="task-table">
+                <thead>
+                    <tr>
+                        <th>Test Name</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Module 1 Test</td>
+                        <td>Oct 10, 2025</td>
+                        <td><span class="task-status completed">Completed</span></td>
+                        <td><button onclick="openModal('viewTest1')">View Submission</button></td>
+                    </tr>
+                    <tr>
+                        <td>Module 2 Test</td>
+                        <td>Oct 15, 2025</td>
+                        <td><span class="task-status completed">Completed</span></td>
+                        <td><button onclick="openModal('viewTest2')">View Submission</button></td>
+                    </tr>
+                    <tr>
+                        <td>Module 3 Test</td>
+                        <td>Oct 22, 2025</td>
+                        <td><span class="task-status upcoming">Upcoming</span></td>
+                        <td><button onclick="openModal('submitTest3')">Take Test</button></td>
+                    </tr>
+                    <tr>
+                        <td>Module 4 Test</td>
+                        <td>Oct 28, 2025</td>
+                        <td><span class="task-status upcoming">Upcoming</span></td>
+                        <td><button onclick="openModal('submitTest4')">Take Test</button></td>
+                    </tr>
+                    <tr>
+                        <td>Module 5 Test</td>
+                        <td>Oct 18, 2025</td>
+                        <td><span class="task-status overdue">Overdue</span></td>
+                        <td><button onclick="openModal('submitTest5')">Submit Late</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Exercises Section -->
+        <section class="task-container">
+            <h2>Exercises</h2>
+            <table class="task-table">
+                <thead>
+                    <tr>
+                        <th>Exercise Name</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Stakeholder Mapping</td>
+                        <td>Oct 12, 2025</td>
+                        <td><span class="task-status completed">Completed</span></td>
+                        <td><button onclick="openModal('viewExercise1')">View Submission</button></td>
+                    </tr>
+                    <tr>
+                        <td>Communication Plan</td>
+                        <td>Oct 20, 2025</td>
+                        <td><span class="task-status upcoming">Upcoming</span></td>
+                        <td><button onclick="openModal('submitExercise2')">Submit Exercise</button></td>
+                    </tr>
+                    <tr>
+                        <td>Conflict Scenario</td>
+                        <td>Oct 15, 2025</td>
+                        <td><span class="task-status overdue">Overdue</span></td>
+                        <td><button onclick="openModal('submitExercise3')">Submit Late</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="task-container">
+            <h2>Projects</h2>
+            <table class="task-table">
+                <thead>
+                    <tr>
+                        <th>Project Name</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Community Outreach Plan</td>
+                        <td>Oct 14, 2025</td>
+                        <td><span class="task-status completed">Completed</span></td>
+                        <td><button onclick="openModal('viewProject1')">View Submission</button></td>
+                    </tr>
+                    <tr>
+                        <td>Sustainability Proposal</td>
+                        <td>Nov 5, 2025</td>
+                        <td><span class="task-status upcoming">Upcoming</span></td>
+                        <td><button onclick="openModal('submitProject2')">Submit Project</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Assignments Section -->
+        <section class="task-container">
+            <h2>Assignments</h2>
+            <table class="task-table">
+                <thead>
+                    <tr>
+                        <th>Assignment Name</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Trust-Building Case Study</td>
+                        <td>Oct 13, 2025</td>
+                        <td><span class="task-status completed">Completed</span></td>
+                        <td><button onclick="openModal('viewAssignment1')">View Submission</button></td>
+                    </tr>
+                    <tr>
+                        <td>Conflict Resolution Essay</td>
+                        <td>Oct 24, 2025</td>
+                        <td><span class="task-status upcoming">Upcoming</span></td>
+                        <td><button onclick="openModal('submitAssignment2')">Submit Assignment</button></td>
+                    </tr>
+                    <tr>
+                        <td>Community Feedback Report</td>
+                        <td>Oct 16, 2025</td>
+                        <td><span class="task-status overdue">Overdue</span></td>
+                        <td><button onclick="openModal('submitAssignment3')">Submit Late</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Live Video -->
+        <section style="text-align: center; margin: 2rem 0;">
+            <h2>Upcoming Live Session</h2>
+            <p>Join us for interactive Q&A on Oct 25, 2025 at 2 PM</p>
+            <button onclick="openModal('liveModal')" style="background: #2b7a4b; color: white; padding: 1rem 2rem; border: none; border-radius: 25px; cursor: pointer;">Join Live</button>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <!-- CourseChat Modal -->
+    <div id="chatModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('chatModal')">&times;</span>
+            <h3>CourseChat</h3>
+            <div class="chat-preview" style="height: 400px;">
+                <div class="chat-message">
+                    <img src="https://via.placeholder.com/30?text=John" alt="John Avatar">
+                    <div class="message-content">
+                        Can anyone share resources on community trust-building?
+                        <span>John Smith • 2h ago</span>
+                    </div>
+                </div>
+                <div class="chat-message own">
+                    <div class="message-content">
+                        I found a great paper on stakeholder engagement! Check the resources section.
+                        <span>You • 1h ago</span>
+                    </div>
+                    <img src="https://via.placeholder.com/30?text=You" alt="Your Avatar">
+                </div>
+                <div class="chat-message">
+                    <img src="https://via.placeholder.com/30?text=Sarah" alt="Sarah Avatar">
+                    <div class="message-content">
+                        Thanks! Also, the lecture on conflict resolution was super insightful.
+                        <span>Sarah Lee • 45m ago</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <textarea placeholder="Type your message..."></textarea>
+                <label for="chatAttachment"><i class="fas fa-paperclip"></i></label>
+                <input type="file" id="chatAttachment" multiple>
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Module Modals -->
+    <div id="module1" class="modal">
+        <div class="modal-content module-modal-content">
+            <span class="close" onclick="closeModal('module1')">&times;</span>
+            <h3>Introduction to Community Engagement</h3>
+            <p>This module introduces the core principles of engaging communities in conservation efforts, focusing on communication and trust-building.</p>
+            <video controls style="width: 100%; margin-top: 1rem;">
+                <source src="sample_module1.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+    <div id="module2" class="modal">
+        <div class="modal-content module-modal-content">
+            <span class="close" onclick="closeModal('module2')">&times;</span>
+            <h3>Building Trust with Stakeholders</h3>
+            <p>Learn strategies to foster trust with local stakeholders to ensure successful conservation projects.</p>
+            <ul style="text-align: left; margin: 1rem 0;">
+                <li><strong>Open Communication:</strong> Maintain transparent and regular dialogue with community leaders.</li>
+                <li><strong>Cultural Sensitivity:</strong> Respect local traditions and values in all interactions.</li>
+                <li><strong>Mutual Benefits:</strong> Ensure projects address community needs alongside conservation goals.</li>
+                <li><strong>Consistency:</strong> Build long-term relationships through consistent engagement.</li>
+            </ul>
+            <video controls style="width: 100%; margin-top: 1rem;">
+                <source src="sample_module2.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+    <div id="module3" class="modal">
+        <div class="modal-content module-modal-content">
+            <span class="close" onclick="closeModal('module3')">&times;</span>
+            <h3>Conflict Resolution Strategies</h3>
+            <p>Explore techniques to manage and resolve conflicts in community-based conservation initiatives.</p>
+            <video controls style="width: 100%; margin-top: 1rem;">
+                <source src="sample_module3.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+    <div id="module4" class="modal">
+        <div class="modal-content module-modal-content">
+            <span class="close" onclick="closeModal('module4')">&times;</span>
+            <h3>Sustainable Practice Implementation</h3>
+            <p>Understand how to implement sustainable practices that align with community values and conservation goals.</p>
+            <video controls style="width: 100%; margin-top: 1rem;">
+                <source src="sample_module4.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+    <div id="module5" class="modal">
+        <div class="modal-content module-modal-content">
+            <span class="close" onclick="closeModal('module5')">&times;</span>
+            <h3>Case Studies and Projects</h3>
+            <p>Analyze real-world case studies and work on projects to apply your learning in practical scenarios.</p>
+            <video controls style="width: 100%; margin-top: 1rem;">
+                <source src="sample_module5.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+
+    <!-- Lecturer Modals -->
+    <div id="addMaterialModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addMaterialModal')">&times;</span>
+            <h3>Add Course Material</h3>
+            <form>
+                <input type="file" multiple>
+                <input type="text" placeholder="Description">
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+    </div>
+    <div id="createTestModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('createTestModal')">&times;</span>
+            <h3>Create Test</h3>
+            <form>
+                <input type="text" placeholder="Test Title">
+                <textarea placeholder="Add questions..."></textarea>
+                <button type="submit">Create</button>
+            </form>
+        </div>
+    </div>
+    <div id="markTestsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('markTestsModal')">&times;</span>
+            <h3>Mark Tests</h3>
+            <div style="height: 300px; overflow-y: auto;">Student submissions list...</div>
+            <button>Review Selected</button>
+        </div>
+    </div>
+    <div id="groupChatModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('groupChatModal')">&times;</span>
+            <h3>Group Chat</h3>
+            <div class="chat-preview" style="height: 300px;">
+                <div class="chat-message">
+                    <img src="https://via.placeholder.com/30?text=John" alt="John Avatar">
+                    <div class="message-content">
+                        Any updates on the group project?
+                        <span>John Smith • 3h ago</span>
+                    </div>
+                </div>
+                <div class="chat-message own">
+                    <div class="message-content">
+                        I uploaded a draft to the resources section!
+                        <span>You • 2h ago</span>
+                    </div>
+                    <img src="https://via.placeholder.com/30?text=You" alt="Your Avatar">
+                </div>
+            </div>
+            <div class="chat-input">
+                <textarea placeholder="Message to group..."></textarea>
+                <label for="groupChatAttachment"><i class="fas fa-paperclip"></i></label>
+                <input type="file" id="groupChatAttachment" multiple>
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+    <div id="individualChatModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('individualChatModal')">&times;</span>
+            <h3>Select Student</h3>
+            <select>
+                <option>Student 1</option>
+                <option>Student 2</option>
+            </select>
+            <div class="chat-input">
+                <textarea placeholder="Type your message..."></textarea>
+                <label for="individualChatAttachment"><i class="fas fa-paperclip"></i></label>
+                <input type="file" id="individualChatAttachment" multiple>
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+    <div id="analyticsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('analyticsModal')">&times;</span>
+            <h3>Course Analytics</h3>
+            <p>Engagement: 85% | Completion Rate: 70%</p>
+            <!-- Placeholder for chart -->
+        </div>
+    </div>
+    <div id="liveModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('liveModal')">&times;</span>
+            <h3>Live Session</h3>
+            <video controls style="width: 100%; height: 400px;"></video>
+        </div>
+    </div>
+
+    <!-- Task Submission Modals -->
+    <div id="viewTest1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('viewTest1')">&times;</span>
+            <h3>Module 1 Test Submission</h3>
+            <p>Review your submitted test for Module 1.</p>
+            <div style="background: #f9f9f9; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>Score:</strong> 80%</p>
+                <p><strong>Feedback:</strong> Great understanding of trust-building concepts!</p>
+            </div>
+            <button onclick="downloadSubmission('test1')">Download Submission</button>
+        </div>
+    </div>
+    <div id="viewTest2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('viewTest2')">&times;</span>
+            <h3>Module 2 Test Submission</h3>
+            <p>Review your submitted test for Module 2.</p>
+            <div style="background: #f9f9f9; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>Score:</strong> 85%</p>
+                <p><strong>Feedback:</strong> Strong grasp of stakeholder engagement strategies.</p>
+            </div>
+            <button onclick="downloadSubmission('test2')">Download Submission</button>
+        </div>
+    </div>
+    <div id="submitTest3" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitTest3')">&times;</span>
+            <h3>Module 3 Test</h3>
+            <form>
+                <textarea placeholder="Enter your answers here..." style="height: 100px;"></textarea>
+                <input type="file" multiple>
+                <button type="submit" onclick="submitTask('test3')">Submit Test</button>
+            </form>
+        </div>
+    </div>
+    <div id="submitTest4" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitTest4')">&times;</span>
+            <h3>Module 4 Test</h3>
+            <form>
+                <textarea placeholder="Enter your answers here..." style="height: 100px;"></textarea>
+                <input type="file" multiple>
+                <button type="submit" onclick="submitTask('test4')">Submit Test</button>
+            </form>
+        </div>
+    </div>
+    <div id="submitTest5" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitTest5')">&times;</span>
+            <h3>Module 5 Test (Overdue)</h3>
+            <form>
+                <textarea placeholder="Enter your answers here..." style="height: 100px;"></textarea>
+                <input type="file" multiple>
+                <button type="submit" onclick="submitTask('test5')">Submit Late</button>
+            </form>
+        </div>
+    </div>
+    <div id="viewExercise1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('viewExercise1')">&times;</span>
+            <h3>Stakeholder Mapping Submission</h3>
+            <p>Review your submitted exercise.</p>
+            <div style="background: #f9f9f9; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>Feedback:</strong> Well-structured stakeholder map!</p>
+            </div>
+            <button onclick="downloadSubmission('exercise1')">Download Submission</button>
+        </div>
+    </div>
+    <div id="submitExercise2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitExercise2')">&times;</span>
+            <h3>Communication Plan</h3>
+            <form>
+                <textarea placeholder="Enter your exercise response..." style="height: 100px;"></textarea>
+                <input type="file" multiple>
+                <button type="submit" onclick="submitTask('exercise2')">Submit Exercise</button>
+            </form>
+        </div>
+    </div>
+    <div id="submitExercise3" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitExercise3')">&times;</span>
+            <h3>Conflict Scenario (Overdue)</h3>
+            <form>
+                <textarea placeholder="Enter your exercise response..." style="height: 100px;"></textarea>
+                <input type="file" multiple>
+                <button type="submit" onclick="submitTask('exercise3')">Submit Late</button>
+            </form>
+        </div>
+    </div>
+    <div id="viewProject1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('viewProject1')">&times;</span>
+            <h3>Community Outreach Plan Submission</h3>
+            <p>Review your submitted project.</p>
+            <div style="background: #f9f9f9; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>Feedback:</strong> Comprehensive plan with clear objectives!</p>
+            </div>
+            <button onclick="downloadSubmission('project1')">Download Submission</button>
+        </div>
+    </div>
+    <div id="submitProject2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitProject2')">&times;</span>
+            <h3>Sustainability Proposal</h3>
+            <form>
+                <textarea placeholder="Enter your project details..." style="height: 150px;"></textarea>
+                <input type="file" multiple>
+                <button type="submit" onclick="submitTask('project2')">Submit Project</button>
+            </form>
+        </div>
+    </div>
+    <div id="viewAssignment1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('viewAssignment1')">&times;</span>
+            <h3>Trust-Building Case Study Submission</h3>
+            <p>Review your submitted assignment.</p>
+            <div style="background: #f9f9f9; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>Feedback:</strong> Excellent analysis of trust-building strategies.</p>
+            </div>
+            <button onclick="downloadSubmission('assignment1')">Download Submission</button>
+        </div>
+    </div>
+    <div id="submitAssignment2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitAssignment2')">&times;</span>
+            <h3>Conflict Resolution Essay</h3>
+            <form>
+                <textarea placeholder="Enter your essay..." style="height: 150px;"></textarea>
+                <input type="file" multiple>
+                <button type="submit" onclick="submitTask('assignment2')">Submit Assignment</button>
+            </form>
+        </div>
+    </div>
+    <div id="submitAssignment3" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitAssignment3')">&times;</span>
+            <h3>Community Feedback Report (Overdue)</h3>
+            <form>
+                <textarea placeholder="Enter your report..." style="height: 150px;"></textarea>
+                <input type="file" multiple>
+                <button type="submit" onclick="submitTask('assignment3')">Submit Late</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+            const icon = document.querySelector('.theme-toggle i');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+        }
+
+        // Role Switching
+        function switchRole() {
+            const role = document.getElementById('roleSelect').value;
+            const lecturerSection = document.getElementById('lecturerSection');
+            if (role === 'lecturer') {
+                lecturerSection.classList.add('active');
+            } else {
+                lecturerSection.classList.remove('active');
+            }
+        }
+
+        // Modal Functions
+        function openModal(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+        function openModuleModal(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        // Quiz Interaction
+        const selectedAnswers = {};
+        function selectOption(option, questionId) {
+            document.querySelectorAll(`.quiz-option[data-question="${questionId}"]`).forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            selectedAnswers[questionId] = option.textContent;
+        }
+        function submitQuiz() {
+            const correctAnswers = {
+                q1: 'A) Building Trust',
+                q2: 'B) Inclusive dialogue',
+                q3: 'B) Cultural insensitivity',
+                q4: 'B) By facilitating communication',
+                q5: 'B) Sustainable community ownership'
+            };
+            let score = 0;
+            for (const [questionId, answer] of Object.entries(selectedAnswers)) {
+                if (answer === correctAnswers[questionId]) score++;
+            }
+            alert(`Quiz submitted! Score: ${score}/5`);
+        }
+
+        // Content Loader
+        function loadContent(value) {
+            alert(`Loading content: ${value}`);
+            // Implement backend logic to load specific content
+        }
+
+        // Chat Send
+        function sendMessage() {
+            alert('Message sent!');
+            // Implement backend logic for sending messages
+        }
+
+        // AI Course Assistant
+        function queryAI() {
+            const query = document.querySelector('.ai-input textarea').value;
+            const responseArea = document.getElementById('aiResponse');
+            // Simulated RAG response
+            let response = 'Processing query: ' + query + '\n';
+            if (query.toLowerCase().includes('progress')) {
+                response += 'Your progress: 65% (2/5 modules completed). Check the Tests, Exercises, Projects, and Assignments sections for task status.';
+            } else if (query.toLowerCase().includes('assignments') || query.toLowerCase().includes('tests') || query.toLowerCase().includes('exercises') || query.toLowerCase().includes('projects')) {
+                response += 'View your completed, upcoming, and overdue tasks in the respective sections below.';
+            } else {
+                response += 'Please refine your query for specific course progress, assignments, or resources.';
+            }
+            responseArea.textContent = response;
+            // Implement actual RAG API call
+        }
+
+        // Task Submission
+        function submitTask(taskId) {
+            alert(`Submitting ${taskId}...`);
+            // Implement backend logic for task submission
+        }
+
+        // Download Submission
+        function downloadSubmission(taskId) {
+            alert(`Downloading ${taskId} submission...`);
+            // Implement backend logic for downloading submission
+        }
+
+        // Mobile Menu
+        function toggleMobileMenu() {
+            const nav = document.querySelector('.nav');
+            nav.classList.toggle('active');
+        }
+
+        // Logout
+        function logout() {
+            alert('Logging out...');
+            // Implement logout logic
+        }
+
+        // Initialize
+        window.onload = function() {
+            switchRole();
+            document.querySelectorAll('.quiz-option').forEach((option, index) => {
+                const questionId = `q${Math.floor(index / 3) + 1}`;
+                option.setAttribute('data-question', questionId);
+            });
+        };
+    </script>
+</body>
+</html>

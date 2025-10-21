@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecturer Dashboard | Matusadonha Nature Conservation Learning</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f4f8f7; color: #2e3b2d; line-height: 1.6; transition: background-color 0.3s, color 0.3s; }
+        body.dark-mode { background-color: #1a1a1a; color: #e0e0e0; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(rgba(43, 122, 75, 0.9), rgba(43, 122, 75, 0.7)), url('https://via.placeholder.com/1920x400?text=Lecturer+Dashboard') center/cover;
+            color: white; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .user-profile { display: flex; align-items: center; gap: 0.5rem; }
+        .user-initials { width: 40px; height: 40px; border-radius: 50%; background: #2b7a4b; color: white; display: flex; align-items: center; justify-content: center; font-size: 1em; font-weight: 600; }
+        body.dark-mode .user-initials { background: #4caf50; }
+        .user-profile span { font-weight: 600; font-size: 1.2em; }
+        .nav { display: flex; gap: 1.5rem; align-items: center; }
+        .nav a { color: white; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        .nav a:hover { color: #eaf8ef; }
+        .theme-toggle { cursor: pointer; font-size: 1.2em; margin-left: 1rem; }
+        .mobile-menu { display: none; cursor: pointer; font-size: 1.5em; }
+
+        /* Main Dashboard */
+        .main-content { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        
+        /* Course Selector */
+        .course-selector { margin-bottom: 2rem; }
+        .course-selector select { width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd; font-size: 1em; background: white; cursor: pointer; }
+        body.dark-mode .course-selector select { background: #333; border: 1px solid #444; color: #e0e0e0; }
+
+        /* Stats Cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: white; padding: 1.5rem; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); }
+        body.dark-mode .stat-card { background: #252525; }
+        .stat-icon { font-size: 2.5em; color: #2b7a4b; margin-bottom: 0.5rem; }
+        body.dark-mode .stat-icon { color: #4caf50; }
+        .stat-number { font-size: 2em; font-weight: 700; color: #2b7a4b; }
+        body.dark-mode .stat-number { color: #4caf50; }
+        .stat-label { font-size: 0.9em; color: #666; }
+        body.dark-mode .stat-label { color: #aaa; }
+
+        /* Analytics Section */
+        .analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+        .analytics-card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        body.dark-mode .analytics-card { background: #252525; }
+        .analytics-card h3 { color: #2b7a4b; margin-bottom: 1rem; }
+        body.dark-mode .analytics-card h3 { color: #4caf50; }
+        canvas { width: 100% !important; max-height: 200px; }
+
+        /* Submission Table */
+        .submission-table { background: white; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        body.dark-mode .submission-table { background: #252525; }
+        .submission-table table { width: 100%; border-collapse: collapse; }
+        .submission-table th, .submission-table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #eee; }
+        body.dark-mode .submission-table th, body.dark-mode .submission-table td { border-bottom: 1px solid #444; }
+        .submission-table th { background: #f5f5f5; font-weight: 600; color: #2b7a4b; }
+        body.dark-mode .submission-table th { background: #333; }
+        .status-pending { background: #ff9800; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.8em; }
+        .status-graded { background: #4caf50; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.8em; }
+        .status-overdue { background: #f44336; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.8em; }
+
+        /* Query Dashboard */
+        .query-dashboard { background: white; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        body.dark-mode .query-dashboard { background: #252525; }
+        .query-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #f9f9f9; border-radius: 10px; margin-bottom: 0.5rem; }
+        body.dark-mode .query-item { background: #333; }
+        .query-item button { background: #2b7a4b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; }
+        body.dark-mode .query-item button { background: #4caf50; }
+
+        /* Top Performers */
+        .top-performers { background: white; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        body.dark-mode .top-performers { background: #252525; }
+        .performer-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: #f9f9f9; border-radius: 8px; margin-bottom: 0.5rem; }
+        body.dark-mode .performer-item { background: #333; }
+
+        /* Sidebar */
+        .dashboard-sidebar { position: fixed; right: 2rem; top: 120px; width: 300px; background: white; padding: 1.5rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); height: fit-content; }
+        body.dark-mode .dashboard-sidebar { background: #252525; }
+        .deadline-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: #fff3e0; margin-bottom: 0.5rem; border-radius: 8px; }
+        body.dark-mode .deadline-item { background: #333; }
+        .action-item { background: #e8f5e8; padding: 1rem; border-radius: 10px; margin-top: 1rem; }
+        body.dark-mode .action-item { background: #2d4d2d; }
+
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 1rem; }
+            .nav { display: none; }
+            .mobile-menu { display: block; }
+            .analytics-grid { grid-template-columns: 1fr; }
+            .dashboard-sidebar { position: static; width: 100%; margin-top: 2rem; }
+        }
+
+        @keyframes slideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .slide-in { animation: slideIn 0.5s ease-out; }
+    </style>
+</head>
+<body class="light-mode slide-in">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="user-profile">
+                <div class="user-initials">JD</div>
+                <span>Jane Doe (Lecturer)</span>
+            </div>
+            <nav class="nav">
+                <a href="{% url 'portal_home' %}"><i class="fas fa-arrow-left"></i> Courses</a>
+                <a href="#" onclick="exportCohortReport()" style="margin-left: auto;"><i class="fas fa-download"></i> Export Cohort Report</a>
+                <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </nav>
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </div>
+            <div class="mobile-menu" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard Content -->
+    <main class="main-content">
+        <!-- Course Selector -->
+        <div class="course-selector">
+            <select id="courseSelect" onchange="updateAnalytics()">
+                <option value="community_engagement" data-url="{% url 'community_engagement' %}">Community Engagement</option>
+                <option value="leadership_skills" data-url="{% url 'leadership_skills' %}">Leadership Skills</option>
+                <option value="conflict_resolution" data-url="{% url 'conflict_resolution' %}">Conflict Resolution</option>
+                <option value="digital_skills" data-url="{% url 'digital_skills' %}">Digital Skills</option>
+                <option value="leadership_styles" data-url="{% url 'leadership_styles' %}">Leadership Styles</option>
+            </select>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-users stat-icon"></i>
+                <div class="stat-number">25</div>
+                <div class="stat-label">Enrolled Students</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-chart-line stat-icon"></i>
+                <div class="stat-number">65%</div>
+                <div class="stat-label">Avg. Progress</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-check-circle stat-icon"></i>
+                <div class="stat-number">40%</div>
+                <div class="stat-label">Completion Rate</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-comments stat-icon"></i>
+                <div class="stat-number">12</div>
+                <div class="stat-label">Pending Queries</div>
+            </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div class="analytics-grid">
+            <div class="analytics-card">
+                <h3>Cohort Progress</h3>
+                <div class="progress-circle" style="width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(#2b7a4b 0deg 234deg, #ddd 234deg 360deg); margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                    <div class="progress-inner" style="width: 80px; height: 80px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2em;">65%</div>
+                </div>
+                <p style="text-align: center;">Average across 25 students</p>
+            </div>
+            <div class="analytics-card">
+                <h3>Grade Distribution</h3>
+                <canvas id="gradeChart"></canvas>
+            </div>
+            <div class="analytics-card">
+                <h3>Engagement Trends</h3>
+                <canvas id="engagementChart"></canvas>
+            </div>
+            <div class="analytics-card">
+                <h3>Completion Gaps</h3>
+                <p>Lowest completion: Module 5 (20%)</p>
+                <p>Action: Assign supplementary resources</p>
+                <button onclick="addResources()" style="background: #2b7a4b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; margin-top: 1rem;">Add Resources</button>
+            </div>
+        </div>
+
+        <!-- Submission Table -->
+        <div class="submission-table">
+            <h3 style="color: #2b7a4b; margin-bottom: 1rem;">Assignment Submissions</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Assignment</th>
+                        <th>Status</th>
+                        <th>Score</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John Smith</td>
+                        <td>Quiz 1</td>
+                        <td><span class="status-graded">Graded</span></td>
+                        <td>92%</td>
+                        <td><button onclick="reviewSubmission('john_quiz1')">Review</button></td>
+                    </tr>
+                    <tr>
+                        <td>Sarah Lee</td>
+                        <td>Quiz 2</td>
+                        <td><span class="status-pending">Pending</span></td>
+                        <td>-</td>
+                        <td><button onclick="gradeSubmission('sarah_quiz2')">Grade</button></td>
+                    </tr>
+                    <tr>
+                        <td>Mike Brown</td>
+                        <td>Final Project</td>
+                        <td><span class="status-overdue">Overdue</span></td>
+                        <td>-</td>
+                        <td><button onclick="sendReminder('mike_project')">Send Reminder</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Top Performers -->
+        <div class="top-performers">
+            <h3 style="color: #2b7a4b; margin-bottom: 1rem;">Top Performers</h3>
+            <div class="performer-item">
+                <span>John Smith</span>
+                <span>92% <i class="fas fa-star" style="color: #ffd700;"></i></span>
+            </div>
+            <div class="performer-item">
+                <span>Sarah Lee</span>
+                <span>88% <i class="fas fa-star" style="color: #ffd700;"></i></span>
+            </div>
+            <div class="performer-item">
+                <span>Emily Davis</span>
+                <span>85% <i class="fas fa-star" style="color: #c0c0c0;"></i></span>
+            </div>
+        </div>
+
+        <!-- Query Dashboard -->
+        <div class="query-dashboard">
+            <h3 style="color: #2b7a4b; margin-bottom: 1rem;">Student Queries</h3>
+            <div class="query-item">
+                <span>John Smith: Clarification on Module 3?</span>
+                <button onclick="replyQuery('john_query')">Reply</button>
+            </div>
+            <div class="query-item">
+                <span>Sarah Lee: Extension for Quiz 2?</span>
+                <button onclick="replyQuery('sarah_query')">Reply</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Dashboard Sidebar -->
+    <aside class="dashboard-sidebar">
+        <h4 style="color: #2b7a4b; margin-bottom: 1rem;">Upcoming Deadlines</h4>
+        <div class="deadline-item">
+            <span>Grade Quiz 3</span>
+            <span style="color: #f44336;">Oct 25, 2025</span>
+        </div>
+        <div class="deadline-item">
+            <span>Upload Module 4 Content</span>
+            <span style="color: #ff9800;">Oct 28, 2025</span>
+        </div>
+        <div class="action-item">
+            <h4 style="color: #2b7a4b; margin-bottom: 0.5rem;">Quick Actions</h4>
+            <p><i class="fas fa-upload"></i> Upload New Content</p>
+            <p><i class="fas fa-edit"></i> Create New Quiz</p>
+        </div>
+    </aside>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+            const icon = document.querySelector('.theme-toggle i');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+            updateCharts();
+        }
+
+        function updateAnalytics() {
+            const course = document.getElementById('courseSelect').value;
+            // Update stats and charts based on selected course
+            updateCharts();
+            alert(`Loading analytics for ${course.replace('_', ' ')}`);
+            // Implement backend API call to fetch course-specific data
+        }
+
+        function updateCharts() {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            const textColor = isDarkMode ? '#e0e0e0' : '#2e3b2d';
+            const gridColor = isDarkMode ? '#444' : '#ddd';
+
+            // Grade Distribution Chart
+            const gradeCtx = document.getElementById('gradeChart').getContext('2d');
+            new Chart(gradeCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['A', 'B', 'C', 'D', 'F'],
+                    datasets: [{
+                        label: 'Students',
+                        data: [10, 8, 5, 2, 0],
+                        backgroundColor: ['#4caf50', '#8bc34a', '#ff9800', '#f44336', '#757575'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: textColor } },
+                        x: { ticks: { color: textColor } }
+                    },
+                    plugins: { legend: { labels: { color: textColor } } }
+                }
+            });
+
+            // Engagement Trends Chart
+            const engagementCtx = document.getElementById('engagementChart').getContext('2d');
+            new Chart(engagementCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'Engagement (%)',
+                        data: [50, 70, 65, 80],
+                        borderColor: '#2b7a4b',
+                        backgroundColor: 'rgba(43, 122, 75, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true, max: 100, grid: { color: gridColor }, ticks: { color: textColor } },
+                        x: { ticks: { color: textColor } }
+                    },
+                    plugins: { legend: { labels: { color: textColor } } }
+                }
+            });
+        }
+
+        function exportCohortReport() {
+            alert('Exporting cohort report PDF...');
+            // Implement report export
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '{% url "login" %}';
+            }
+        }
+
+        function toggleMobileMenu() {
+            const nav = document.querySelector('.nav');
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function reviewSubmission(id) {
+            alert(`Reviewing submission ${id}...`);
+            // Implement review logic
+        }
+
+        function gradeSubmission(id) {
+            alert(`Grading submission ${id}...`);
+            // Implement grading logic
+        }
+
+        function sendReminder(id) {
+            alert(`Sending reminder for ${id}...`);
+            // Implement reminder logic
+        }
+
+        function replyQuery(id) {
+            alert(`Replying to query ${id}...`);
+            // Implement reply logic
+        }
+
+        function addResources() {
+            alert('Opening resource upload interface...');
+            // Implement resource upload
+        }
+
+        window.onload = function() {
+            updateAnalytics();
+        };
+    </script>
+</body>
+</html>

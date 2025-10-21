@@ -1,0 +1,996 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conflict Resolution | Matusadonha Nature Conservation Learning</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f4f4f4; color: #1c2526; line-height: 1.6; transition: background-color 0.3s, color 0.3s; }
+        body.dark-mode { background-color: #252525; color: #e0e0e0; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(rgba(28, 37, 38, 0.9), rgba(28, 37, 38, 0.7)), url('https://via.placeholder.com/1920x400?text=Conflict+Resolution+Banner') center/cover;
+            color: white; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .user-profile { display: flex; align-items: center; gap: 0.5rem; }
+        .user-initials { width: 32px; height: 32px; border-radius: 50%; background: #1c2526; color: white; display: flex; align-items: center; justify-content: center; font-size: 1em; font-weight: 500; }
+        body.dark-mode .user-initials { background: #666; }
+        .user-profile span { font-weight: 500; font-size: 1.1em; }
+        .nav { display: flex; gap: 1.5rem; align-items: center; }
+        .nav a { color: white; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        .nav a:hover { color: #e0e0e0; }
+        .role-switcher { display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px; }
+        .role-switcher select { background: transparent; color: white; border: none; font-size: 0.9em; }
+        .theme-toggle { cursor: pointer; font-size: 1.2em; margin-left: 1rem; }
+        .mobile-menu { display: none; cursor: pointer; font-size: 1.5em; }
+
+        /* Light Mode */
+        body.light-mode .course-hero { background: #e0e0e0; }
+        body.light-mode .lecturer-section { background: #ffffff; }
+        body.light-mode .action-card { background: #f0f0f0; }
+        body.light-mode .module-item { background: #ffffff; border: 1px solid #ccc; }
+        body.light-mode .module-item:hover { background: #f5f5f5; }
+        body.light-mode .sidebar { background: #ffffff; border: 1px solid #ccc; }
+        body.light-mode .chat-preview { background: #f9f9f9; border: 1px solid #ccc; }
+        body.light-mode .video-card { background: #ffffff; }
+        body.light-mode .quiz-container { background: #ffffff; border: 1px solid #ccc; }
+        body.light-mode .modal-content { background: #ffffff; border: 1px solid #ccc; }
+        body.light-mode .ai-assistant { background: #ffffff; }
+        body.light-mode .ai-response { background: #f9f9f9; }
+        body.light-mode .task-container { background: #ffffff; border: 1px solid #ccc; }
+        body.light-mode .task-table th { background: #f5f5f5; }
+
+        /* Dark Mode */
+        body.dark-mode .header { background: linear-gradient(rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.7)), url('https://via.placeholder.com/1920x400?text=Conflict+Resolution+Banner') center/cover; }
+        body.dark-mode .course-hero { background: #333; }
+        body.dark-mode .lecturer-section { background: #252525; }
+        body.dark-mode .action-card { background: #444; }
+        body.dark-mode .action-card:hover { background: #555; }
+        body.dark-mode .module-item { background: #252525; border: 1px solid #666; }
+        body.dark-mode .module-item:hover { background: #444; }
+        body.dark-mode .sidebar { background: #252525; border: 1px solid #666; }
+        body.dark-mode .chat-preview { background: #444; border: 1px solid #666; }
+        body.dark-mode .video-card { background: #252525; }
+        body.dark-mode .quiz-container { background: #252525; border: 1px solid #666; }
+        body.dark-mode .modal-content { background: #252525; border: 1px solid #666; }
+        body.dark-mode .ai-assistant { background: #252525; }
+        body.dark-mode .ai-response { background: #444; }
+        body.dark-mode .task-container { background: #252525; border: 1px solid #666; }
+        body.dark-mode .task-table th { background: #444; }
+
+        /* Course Hero Section */
+        .course-hero {
+            background: #e0e0e0; padding: 3.2rem 2rem; text-align: center; max-width: 1200px; margin: 3px auto 0; }
+        .course-hero h1 { font-size: 2.8em; color: #1c2526; margin-bottom: 1rem; }
+        body.dark-mode .course-hero h1 { color: #e0e0e0; }
+        .course-hero p { font-size: 1.2em; max-width: 800px; margin: 0 auto 2rem; }
+        .progress-bar { background: #ccc; height: 10px; border-radius: 5px; overflow: hidden; margin: 2rem auto; width: 300px; }
+        .progress-fill { background: #1c2526; height: 100%; transition: width 0.3s; width: 55%; }
+        body.dark-mode .progress-bar { background: #666; }
+        body.dark-mode .progress-fill { background: #e0e0e0; }
+        .lecturer-section { background: white; padding: 2rem; margin: 2rem auto; max-width: 1200px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: none; }
+        .lecturer-section.active { display: block; }
+        .lecturer-section h2 { color: #1c2526; margin-bottom: 1.5rem; }
+        body.dark-mode .lecturer-section h2 { color: #e0e0e0; }
+        .lecturer-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; justify-items: center; }
+        .action-card { background: #f0f0f0; padding: 1.5rem; border-radius: 10px; text-align: center; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; width: 100%; max-width: 300px; }
+        .action-card:hover { transform: translateY(-5px); box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .action-card i { font-size: 2.5em; color: #1c2526; margin-bottom: 1rem; }
+        body.dark-mode .action-card i { color: #e0e0e0; }
+
+        /* Main Content */
+        .main-content { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .course-overview { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; margin-bottom: 3rem; align-items: start; }
+        .overview-left h2 { color: #1c2526; margin-bottom: 1rem; }
+        body.dark-mode .overview-left h2 { color: #e0e0e0; }
+        .module-list { list-style: none; }
+        .module-item { background: white; margin-bottom: 1rem; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); cursor: pointer; transition: background 0.3s; }
+        .module-item:hover { background: #f5f5f5; }
+        body.dark-mode .module-item:hover { background: #444; }
+        .module-item.completed { border-left: 5px solid #1c2526; }
+        body.dark-mode .module-item.completed { border-left: 5px solid #e0e0e0; }
+        .module-item i { color: #1c2526; margin-right: 1rem; }
+        body.dark-mode .module-item i { color: #e0e0e0; }
+        .sidebar { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .sidebar h3 { color: #1c2526; margin-bottom: 1rem; }
+        body.dark-mode .sidebar h3 { color: #e0e0e0; }
+        .chat-preview { height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 1rem; border-radius: 5px; margin-bottom: 1rem; background: #f9f9f9; }
+        body.dark-mode .chat-preview { background: #444; border: 1px solid #666; }
+        .chat-message { display: flex; align-items: flex-start; margin-bottom: 1rem; font-size: 0.9em; }
+        .chat-message img { width: 30px; height: 30px; border-radius: 50%; margin-right: 0.5rem; }
+        .chat-message.own { justify-content: flex-end; }
+        .chat-message.own .message-content { background: #1c2526; color: white; }
+        body.dark-mode .chat-message.own .message-content { background: #666; }
+        .message-content { background: #e0e0e0; padding: 0.5rem 1rem; border-radius: 10px; max-width: 70%; }
+        body.dark-mode .message-content { background: #555; }
+        .message-content span { display: block; font-size: 0.8em; color: #666; }
+        body.dark-mode .message-content span { color: #aaa; }
+
+        /* AI Course Assistant */
+        .ai-assistant {
+            background: white; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        .ai-input { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+        .ai-input textarea {
+            flex: 1; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; resize: none; height: 60px;
+        }
+        body.dark-mode .ai-input textarea { border: 1px solid #666; background: #444; color: #e0e0e0; }
+        .ai-input button { background: #1c2526; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; }
+        body.dark-mode .ai-input button { background: #666; }
+        .ai-input button:hover { background: #2e3b3d; }
+        body.dark-mode .ai-input button:hover { background: #777; }
+        .ai-response { background: #f9f9f9; padding: 1rem; border-radius: 8px; min-height: 100px; }
+        body.dark-mode .ai-response { background: #444; }
+
+        /* Task Sections */
+        .task-container { background: white; padding: 2rem; border-radius: 10px; margin: 2rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .task-container h2 { color: #1c2526; margin-bottom: 1rem; }
+        body.dark-mode .task-container h2 { color: #e0e0e0; }
+        .task-table { width: 100%; border-collapse: collapse; }
+        .task-table th, .task-table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #ccc; }
+        body.dark-mode .task-table th, body.dark-mode .task-table td { border-bottom: 1px solid #666; }
+        .task-table th { background: #f5f5f5; font-weight: 600; color: #1c2526; }
+        body.dark-mode .task-table th { background: #444; color: #e0e0e0; }
+        .task-status.completed { background: #1c2526; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.8em; }
+        body.dark-mode .task-status.completed { background: #666; }
+        .task-status.upcoming { background: #ff9800; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.8em; }
+        .task-status.overdue { background: #f44336; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.8em; }
+        .task-table button { background: #1c2526; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; }
+        body.dark-mode .task-table button { background: #666; }
+        .task-table button:hover { background: #2e3b3d; }
+        body.dark-mode .task-table button:hover { background: #777; }
+
+        /* Interactive Elements */
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0; justify-items: center; }
+        .video-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.3s; width: 100%; max-width: 350px; }
+        .video-card:hover { transform: scale(1.02); }
+        .video-card select { width: 100%; padding: 0.5rem; margin: 1rem 0; border: 1px solid #ccc; border-radius: 5px; }
+        body.dark-mode .video-card select { border: 1px solid #666; background: #444; color: #e0e0e0; }
+        .video-info { padding: 1rem; }
+        .quiz-container { background: white; padding: 2rem; border-radius: 10px; margin: 2rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .quiz-question { margin-bottom: 1.5rem; }
+        .quiz-option { display: block; padding: 0.5rem; margin: 0.5rem 0; cursor: pointer; border: 1px solid #ccc; border-radius: 5px; transition: background 0.3s; }
+        body.dark-mode .quiz-option { border: 1px solid #666; }
+        .quiz-option:hover { background: #e0e0e0; }
+        body.dark-mode .quiz-option:hover { background: #555; }
+        .quiz-option.selected { background: #1c2526; color: white; }
+        body.dark-mode .quiz-option.selected { background: #666; }
+
+        /* Modals */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
+        .modal-content { background: white; margin: 5% auto; padding: 2rem; border-radius: 15px; width: 90%; max-width: 800px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: slideIn 0.3s; }
+        .module-modal-content { max-width: 1000px; }
+        .close { color: #666; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close:hover { color: #1c2526; }
+        body.dark-mode .close:hover { color: #e0e0e0; }
+        .modal form { display: flex; flex-direction: column; gap: 1rem; }
+        .modal input, .modal textarea, .modal select { padding: 0.75rem; border: 1px solid #ccc; border-radius: 5px; }
+        body.dark-mode .modal input, body.dark-mode .modal textarea, body.dark-mode .modal select { border: 1px solid #666; background: #444; color: #e0e0e0; }
+        .modal button { background: #1c2526; color: white; padding: 0.75rem; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
+        body.dark-mode .modal button { background: #666; }
+        .modal button:hover { background: #2e3b3d; }
+        body.dark-mode .modal button:hover { background: #777; }
+        .chat-input { display: flex; align-items: center; gap: 0.5rem; }
+        .chat-input textarea { flex: 1; resize: none; height: 40px; }
+        .chat-input button, .chat-input label { background: #1c2526; color: white; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; }
+        body.dark-mode .chat-input button, body.dark-mode .chat-input label { background: #666; }
+        .chat-input input[type="file"] { display: none; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 1rem; align-items: flex-start; }
+            .nav { display: none; flex-direction: column; width: 100%; background: rgba(0,0,0,0.8); padding: 1rem; }
+            .nav.active { display: flex; }
+            .mobile-menu { display: block; align-self: flex-end; }
+            .course-hero h1 { font-size: 2em; }
+            .course-overview { grid-template-columns: 1fr; }
+            .lecturer-actions { grid-template-columns: 1fr; }
+            .video-card, .action-card { max-width: 100%; }
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="user-profile">
+                <div class="user-initials">JD</div>
+                <span>Jane Doe</span>
+            </div>
+            <nav class="nav">
+                <a href="{% url 'portal_home' %}"><i class="fas fa-arrow-left"></i> Back</a>
+                <a href="{% url 'dashboard_student' %}"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="#" onclick="logout()" style="margin-left: auto;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </nav>
+            <div class="role-switcher">
+                <i class="fas fa-user"></i>
+                <select id="roleSelect" onchange="switchRole()">
+                    <option value="student">Student</option>
+                    <option value="lecturer">Lecturer</option>
+                </select>
+            </div>
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </div>
+            <div class="mobile-menu" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></div>
+        </div>
+    </header>
+
+    <!-- Course Hero Section -->
+    <section class="course-hero">
+        <h1>Conflict Resolution in Conservation</h1>
+        <p>Master the art of resolving conflicts in conservation projects through mediation, negotiation, and emotional intelligence.</p>
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+    </section>
+
+    <!-- Lecturer Section -->
+    <section id="lecturerSection" class="lecturer-section">
+        <h2>Lecturer Dashboard</h2>
+        <div class="lecturer-actions">
+            <div class="action-card" onclick="openModal('addMaterialModal')">
+                <i class="fas fa-upload"></i>
+                <h3>Add Course Material</h3>
+                <p>Upload videos, documents, or resources for students.</p>
+            </div>
+            <div class="action-card" onclick="openModal('createTestModal')">
+                <i class="fas fa-edit"></i>
+                <h3>Create Test</h3>
+                <p>Design quizzes and assessments for learner evaluation.</p>
+            </div>
+            <div class="action-card" onclick="openModal('markTestsModal')">
+                <i class="fas fa-check-circle"></i>
+                <h3>Mark Tests</h3>
+                <p>Review and grade student submissions.</p>
+            </div>
+            <div class="action-card" onclick="openModal('groupChatModal')">
+                <i class="fas fa-comments"></i>
+                <h3>Group Chat</h3>
+                <p>Engage with all learners in real-time discussions.</p>
+            </div>
+            <div class="action-card" onclick="openModal('individualChatModal')">
+                <i class="fas fa-user-friends"></i>
+                <h3>Individual Chat</h3>
+                <p>Provide personalized feedback to specific students.</p>
+            </div>
+            <div class="action-card" onclick="openModal('analyticsModal')">
+                <i class="fas fa-chart-bar"></i>
+                <h3>Analytics</h3>
+                <p>View student progress and engagement metrics.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="course-overview">
+            <div class="overview-left">
+                <h2>Course Modules</h2>
+                <ul class="module-list">
+                    <li class="module-item completed" onclick="openModuleModal('module1')"><i class="fas fa-check-circle"></i> Introduction to Conflict Resolution</li>
+                    <li class="module-item completed" onclick="openModuleModal('module2')"><i class="fas fa-check-circle"></i> Mediation Techniques</li>
+                    <li class="module-item" onclick="openModuleModal('module3')"><i class="fas fa-play-circle"></i> Negotiation Strategies</li>
+                    <li class="module-item" onclick="openModuleModal('module4')"><i class="fas fa-play-circle"></i> Emotional Intelligence in Conflict</li>
+                    <li class="module-item" onclick="openModuleModal('module5')"><i class="fas fa-play-circle"></i> Case Studies and Role-Playing</li>
+                </ul>
+            </div>
+            <aside class="sidebar">
+                <h3>CourseChat</h3>
+                <div class="chat-preview" id="chatPreview">
+                    <div class="chat-message">
+                        <img src="https://via.placeholder.com/30?text=John" alt="John Avatar">
+                        <div class="message-content">
+                            Any tips for applying mediation in group settings?
+                            <span>John Smith • 2h ago</span>
+                        </div>
+                    </div>
+                    <div class="chat-message own">
+                        <div class="message-content">
+                            Check the Module 2 resources for group mediation strategies!
+                            <span>You • 1h ago</span>
+                        </div>
+                        <img src="https://via.placeholder.com/30?text=You" alt="Your Avatar">
+                    </div>
+                    <div class="chat-message">
+                        <img src="https://via.placeholder.com/30?text=Sarah" alt="Sarah Avatar">
+                        <div class="message-content">
+                            The negotiation video was really helpful. Thanks!
+                            <span>Sarah Lee • 30m ago</span>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="openModal('chatModal')">Open CourseChat</button>
+            </aside>
+        </div>
+
+        <!-- AI Course Assistant -->
+        <section class="ai-assistant">
+            <h2>AI Course Assistant</h2>
+            <div class="ai-input">
+                <textarea placeholder="Ask about course progress, assignments, or resources (e.g., 'Show my progress in Conflict Resolution')"></textarea>
+                <button onclick="queryAI()">Submit</button>
+            </div>
+            <div class="ai-response" id="aiResponse">AI Response will appear here...</div>
+        </section>
+
+        <!-- Recorded Lessons -->
+        <section>
+            <h2>Recorded Lessons</h2>
+            <div class="video-grid">
+                <div class="video-card">
+                    <select onchange="loadContent(this.value)">
+                        <option value="">Select Content</option>
+                        <option value="video1">Video: Introduction (40 min)</option>
+                        <option value="pdf1">PDF: Conflict Resolution Basics</option>
+                        <option value="slides1">Slides: Core Concepts</option>
+                    </select>
+                    <div class="video-info">
+                        <h4>Lesson 1: Introduction</h4>
+                        <p>Multiple formats available</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <select onchange="loadContent(this.value)">
+                        <option value="">Select Content</option>
+                        <option value="video2">Video: Mediation Techniques (35 min)</option>
+                        <option value="pdf2">PDF: Mediation Case Studies</option>
+                        <option value="slides2">Slides: Mediation Overview</option>
+                    </select>
+                    <div class="video-info">
+                        <h4>Lesson 2: Mediation</h4>
+                        <p>Multiple formats available</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section class="quiz-container">
+            <h2>Conflict Resolution Quiz</h2>
+            <div class="quiz-question">
+                <p>1. What is the first step in conflict resolution?</p>
+                <label class="quiz-option" onclick="selectOption(this, 'q1')">A) Identifying the issue</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q1')">B) Implementing solutions</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q1')">C) Assigning blame</label>
+            </div>
+            <div class="quiz-question">
+                <p>2. Which technique is most effective in mediation?</p>
+                <label class="quiz-option" onclick="selectOption(this, 'q2')">A) Active listening</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q2')">B) Imposing solutions</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q2')">C) Avoiding discussion</label>
+            </div>
+            <div class="quiz-question">
+                <p>3. What role does emotional intelligence play in conflict resolution?</p>
+                <label class="quiz-option" onclick="selectOption(this, 'q3')">A) It increases tension</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q3')">B) It fosters empathy</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q3')">C) It delays resolution</label>
+            </div>
+            <div class="quiz-question">
+                <p>4. What is a key barrier to effective negotiation?</p>
+                <label class="quiz-option" onclick="selectOption(this, 'q4')">A) Clear objectives</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q4')">B) Lack of trust</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q4')">C) Open communication</label>
+            </div>
+            <div class="quiz-question">
+                <p>5. What is a successful outcome of conflict resolution?</p>
+                <label class="quiz-option" onclick="selectOption(this, 'q5')">A) Temporary agreement</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q5')">B) Mutually beneficial solution</label>
+                <label class="quiz-option" onclick="selectOption(this, 'q5')">C) One-sided victory</label>
+            </div>
+            <button onclick="submitQuiz()">Submit Quiz</button>
+        </section>
+
+        <!-- Tests Section -->
+        <section class="task-container">
+            <h2>Tests</h2>
+            <table class="task-table">
+                <thead>
+                    <tr>
+                        <th>Test Name</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Module 1 Test</td>
+                        <td>Oct 8, 2025</td>
+                        <td><span class="task-status completed">Completed</span></td>
+                        <td><button onclick="openModal('viewTest1')">View Submission</button></td>
+                    </tr>
+                    <tr>
+                        <td>Module 2 Test</td>
+                        <td>Oct 14, 2025</td>
+                        <td><span class="task-status completed">Completed</span></td>
+                        <td><button onclick="openModal('viewTest2')">View Submission</button></td>
+                    </tr>
+                    <tr>
+                        <td>Module 3 Test</td>
+                        <td>Oct 23, 2025</td>
+                        <td><span class="task-status upcoming">Upcoming</span></td>
+                        <td><button onclick="openModal('submitTest3')">Take Test</button></td>
+                    </tr>
+                    <tr>
+                        <td>Module 4 Test</td>
+                        <td>Oct 29, 2025</td>
+                        <td><span class="task-status upcoming">Upcoming</span></td>
+                        <td><button onclick="openModal('submitTest4')">Take Test</button></td>
+                    </tr>
+                    <tr>
+                        <td>Module 5 Test</td>
+                        <td>Oct 17, 2025</td>
+                        <td><span class="task-status overdue">Overdue</span></td>
+                        <td><button onclick="openModal('submitTest5')">Submit Late</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Exercises Section -->
+        <section class="task-container">
+            <h2>Exercises</h2>
+            <table class="task-table">
+                <thead>
+                    <tr>
+                        <th>Exercise Name</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mediation Role-Play</td>
+                        <td>Oct 10, 2025</td>
+                        <td><span class="task-status completed">Completed</span></td>
+                        <td><button onclick="openModal('viewExercise1')">View Submission</button></td>
+                    </tr>
+                    <tr>
+                        <td>Negotiation Scenario</td>
+                        <td>Oct 22, 2025</td>
+                        <td><span class="task-status upcoming">Upcoming</span></td>
+                        <td><button onclick="openModal('submitExercise2')">Submit Exercise</button></td>
+                    </tr>
+                    <tr>
+                        <td>Emotional Intelligence Practice</td>
+                        <td>Oct 16, 2025</td>
+                        <td><span class="task-status overdue">Overdue</span></td>
+                        <td><button onclick="openModal('submitExercise3')">Submit Late</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="task-container">
+            <h2>Projects</h2>
+            <table class="task-table">
+                <thead>
+                    <tr>
+                        <th>Project Name</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Conflict Analysis Report</td>
+                        <td>Oct 12, 2025</td>
+                        <td><span class="task-status completed">Completed</span></td>
+                        <td><button onclick="openModal('viewProject1')">View Submission</button></td>
+                    </tr>
+                    <tr>
+                        <td>Resolution Strategy Plan</td>
+                        <td>Nov 3, 2025</td>
+                        <td><span class="task-status upcoming">Upcoming</span></td>
+                        <td><button onclick="openModal('submitProject2')">Submit Project</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Assignments Section -->
+        <section class="task-container">
+            <h2>Assignments</h2>
+            <table class="task-table">
+                <thead>
+                    <tr>
+                        <th>Assignment Name</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mediation Case Study</td>
+                        <td>Oct 11, 2025</td>
+                        <td><span class="task-status completed">Completed</span></td>
+                        <td><button onclick="openModal('viewAssignment1')">View Submission</button></td>
+                    </tr>
+                    <tr>
+                        <td>Negotiation Essay</td>
+                        <td>Oct 25, 2025</td>
+                        <td><span class="task-status upcoming">Upcoming</span></td>
+                        <td><button onclick="openModal('submitAssignment2')">Submit Assignment</button></td>
+                    </tr>
+                    <tr>
+                        <td>Emotional Intelligence Report</td>
+                        <td>Oct 15, 2025</td>
+                        <td><span class="task-status overdue">Overdue</span></td>
+                        <td><button onclick="openModal('submitAssignment3')">Submit Late</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Live Video -->
+        <section style="text-align: center; margin: 2rem 0;">
+            <h2>Upcoming Live Session</h2>
+            <p>Join us for an interactive Q&A on Oct 28, 2025 at 3 PM</p>
+            <button onclick="openModal('liveModal')" style="background: #1c2526; color: white; padding: 1rem 2rem; border: none; border-radius: 25px; cursor: pointer;">Join Live</button>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <!-- CourseChat Modal -->
+    <div id="chatModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('chatModal')">&times;</span>
+            <h3>CourseChat</h3>
+            <div class="chat-preview" style="height: 400px;">
+                <div class="chat-message">
+                    <img src="https://via.placeholder.com/30?text=John" alt="John Avatar">
+                    <div class="message-content">
+                        Any tips for applying mediation in group settings?
+                        <span>John Smith • 2h ago</span>
+                    </div>
+                </div>
+                <div class="chat-message own">
+                    <div class="message-content">
+                        Check the Module 2 resources for group mediation strategies!
+                        <span>You • 1h ago</span>
+                    </div>
+                    <img src="https://via.placeholder.com/30?text=You" alt="Your Avatar">
+                </div>
+                <div class="chat-message">
+                    <img src="https://via.placeholder.com/30?text=Sarah" alt="Sarah Avatar">
+                    <div class="message-content">
+                        The negotiation video was really helpful. Thanks!
+                        <span>Sarah Lee • 30m ago</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <textarea placeholder="Type your message..."></textarea>
+                <label for="chatAttachment"><i class="fas fa-paperclip"></i></label>
+                <input type="file" id="chatAttachment" multiple>
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Module Modals -->
+    <div id="module1" class="modal">
+        <div class="modal-content module-modal-content">
+            <span class="close" onclick="closeModal('module1')">&times;</span>
+            <h3>Introduction to Conflict Resolution</h3>
+            <p>Learn the foundational principles of resolving conflicts in conservation settings, focusing on communication and collaboration.</p>
+            <video controls style="width: 100%; margin-top: 1rem;">
+                <source src="sample_module1.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+    <div id="module2" class="modal">
+        <div class="modal-content module-modal-content">
+            <span class="close" onclick="closeModal('module2')">&times;</span>
+            <h3>Mediation Techniques</h3>
+            <p>Explore effective mediation strategies to facilitate dialogue and resolve disputes among stakeholders.</p>
+            <ul style="text-align: left; margin: 1rem 0;">
+                <li><strong>Neutral Facilitation:</strong> Act as an impartial mediator to guide discussions.</li>
+                <li><strong>Active Listening:</strong> Understand all parties’ perspectives to find common ground.</li>
+                <li><strong>Structured Dialogue:</strong> Use frameworks to keep discussions productive.</li>
+                <li><strong>Consensus Building:</strong> Encourage mutually acceptable solutions.</li>
+            </ul>
+            <video controls style="width: 100%; margin-top: 1rem;">
+                <source src="sample_module2.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+    <div id="module3" class="modal">
+        <div class="modal-content module-modal-content">
+            <span class="close" onclick="closeModal('module3')">&times;</span>
+            <h3>Negotiation Strategies</h3>
+            <p>Master negotiation techniques to achieve win-win outcomes in conservation conflicts.</p>
+            <video controls style="width: 100%; margin-top: 1rem;">
+                <source src="sample_module3.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+    <div id="module4" class="modal">
+        <div class="modal-content module-modal-content">
+            <span class="close" onclick="closeModal('module4')">&times;</span>
+            <h3>Emotional Intelligence in Conflict</h3>
+            <p>Understand how emotional intelligence can de-escalate tensions and foster collaboration.</p>
+            <video controls style="width: 100%; margin-top: 1rem;">
+                <source src="sample_module4.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+    <div id="module5" class="modal">
+        <div class="modal-content module-modal-content">
+            <span class="close" onclick="closeModal('module5')">&times;</span>
+            <h3>Case Studies and Role-Playing</h3>
+            <p>Apply conflict resolution skills through real-world case studies and role-playing exercises.</p>
+            <video controls style="width: 100%; margin-top: 1rem;">
+                <source src="sample_module5.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+
+    <!-- Lecturer Modals -->
+    <div id="addMaterialModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addMaterialModal')">&times;</span>
+            <h3>Add Course Material</h3>
+            <form>
+                <input type="file" multiple>
+                <input type="text" placeholder="Description">
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+    </div>
+    <div id="createTestModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('createTestModal')">&times;</span>
+            <h3>Create Test</h3>
+            <form>
+                <input type="text" placeholder="Test Title">
+                <textarea placeholder="Add questions..."></textarea>
+                <button type="submit">Create</button>
+            </form>
+        </div>
+    </div>
+    <div id="markTestsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('markTestsModal')">&times;</span>
+            <h3>Mark Tests</h3>
+            <div style="height: 300px; overflow-y: auto;">Student submissions list...</div>
+            <button>Review Selected</button>
+        </div>
+    </div>
+    <div id="groupChatModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('groupChatModal')">&times;</span>
+            <h3>Group Chat</h3>
+            <div class="chat-preview" style="height: 300px;">
+                <div class="chat-message">
+                    <img src="https://via.placeholder.com/30?text=John" alt="John Avatar">
+                    <div class="message-content">
+                        Any updates on the role-playing exercise?
+                        <span>John Smith • 3h ago</span>
+                    </div>
+                </div>
+                <div class="chat-message own">
+                    <div class="message-content">
+                        I uploaded a guide to the resources section!
+                        <span>You • 2h ago</span>
+                    </div>
+                    <img src="https://via.placeholder.com/30?text=You" alt="Your Avatar">
+                </div>
+            </div>
+            <div class="chat-input">
+                <textarea placeholder="Message to group..."></textarea>
+                <label for="groupChatAttachment"><i class="fas fa-paperclip"></i></label>
+                <input type="file" id="groupChatAttachment" multiple>
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+    <div id="individualChatModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('individualChatModal')">&times;</span>
+            <h3>Select Student</h3>
+            <select>
+                <option>Student 1</option>
+                <option>Student 2</option>
+            </select>
+            <div class="chat-input">
+                <textarea placeholder="Type your message..."></textarea>
+                <label for="individualChatAttachment"><i class="fas fa-paperclip"></i></label>
+                <input type="file" id="individualChatAttachment" multiple>
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+    <div id="analyticsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('analyticsModal')">&times;</span>
+            <h3>Course Analytics</h3>
+            <p>Engagement: 80% | Completion Rate: 55%</p>
+            <!-- Placeholder for chart -->
+        </div>
+    </div>
+    <div id="liveModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('liveModal')">&times;</span>
+            <h3>Live Session</h3>
+            <video controls style="width: 100%; height: 400px;"></video>
+        </div>
+    </div>
+
+    <!-- Task Submission Modals -->
+    <div id="viewTest1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('viewTest1')">&times;</span>
+            <h3>Module 1 Test Submission</h3>
+            <p>Review your submitted test for Module 1.</p>
+            <div style="background: #f9f9f9; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>Score:</strong> 78%</p>
+                <p><strong>Feedback:</strong> Solid understanding of conflict resolution basics!</p>
+            </div>
+            <button onclick="downloadSubmission('test1')">Download Submission</button>
+        </div>
+    </div>
+    <div id="viewTest2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('viewTest2')">&times;</span>
+            <h3>Module 2 Test Submission</h3>
+            <p>Review your submitted test for Module 2.</p>
+            <div style="background: #f9f9f9; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>Score:</strong> 82%</p>
+                <p><strong>Feedback:</strong> Great application of mediation techniques.</p>
+            </div>
+            <button onclick="downloadSubmission('test2')">Download Submission</button>
+        </div>
+    </div>
+    <div id="submitTest3" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitTest3')">&times;</span>
+            <h3>Module 3 Test</h3>
+            <form>
+                <textarea placeholder="Enter your answers here..." style="height: 100px;"></textarea>
+                <input type="file" multiple>
+                <button type="submit" onclick="submitTask('test3')">Submit Test</button>
+            </form>
+        </div>
+    </div>
+    <div id="submitTest4" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitTest4')">&times;</span>
+            <h3>Module 4 Test</h3>
+            <form>
+                <textarea placeholder="Enter your answers here..." style="height: 100px;"></textarea>
+                <input type="file" multiple>
+                <button type="submit" onclick="submitTask('test4')">Submit Test</button>
+            </form>
+        </div>
+    </div>
+    <div id="submitTest5" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitTest5')">&times;</span>
+            <h3>Module 5 Test (Overdue)</h3>
+            <form>
+                <textarea placeholder="Enter your answers here..." style="height: 100px;"></textarea>
+                <input type="file" multiple>
+                <button type="submit" onclick="submitTask('test5')">Submit Late</button>
+            </form>
+        </div>
+    </div>
+    <div id="viewExercise1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('viewExercise1')">&times;</span>
+            <h3>Mediation Role-Play Submission</h3>
+            <p>Review your submitted exercise.</p>
+            <div style="background: #f9f9f9; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>Feedback:</strong> Excellent role-play performance!</p>
+            </div>
+            <button onclick="downloadSubmission('exercise1')">Download Submission</button>
+        </div>
+    </div>
+    <div id="submitExercise2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitExercise2')">&times;</span>
+            <h3>Negotiation Scenario</h3>
+            <form>
+                <textarea placeholder="Enter your exercise response..." style="height: 100px;"></textarea>
+                <input type="file" multiple>
+                <button type="submit" onclick="submitTask('exercise2')">Submit Exercise</button>
+            </form>
+        </div>
+    </div>
+    <div id="submitExercise3" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitExercise3')">&times;</span>
+            <h3>Emotional Intelligence Practice (Overdue)</h3>
+            <form>
+                <textarea placeholder="Enter your exercise response..." style="height: 100px;"></textarea>
+                <input type="file" multiple>
+                <button type="submit" onclick="submitTask('exercise3')">Submit Late</button>
+            </form>
+        </div>
+    </div>
+    <div id="viewProject1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('viewProject1')">&times;</span>
+            <h3>Conflict Analysis Report Submission</h3>
+            <p>Review your submitted project.</p>
+            <div style="background: #f9f9f9; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>Feedback:</strong> Thorough analysis with actionable insights!</p>
+            </div>
+            <button onclick="downloadSubmission('project1')">Download Submission</button>
+        </div>
+    </div>
+    <div id="submitProject2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitProject2')">&times;</span>
+            <h3>Resolution Strategy Plan</h3>
+            <form>
+                <textarea placeholder="Enter your project details..." style="height: 150px;"></textarea>
+                <input type="file" multiple>
+                <button type="submit" onclick="submitTask('project2')">Submit Project</button>
+            </form>
+        </div>
+    </div>
+    <div id="viewAssignment1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('viewAssignment1')">&times;</span>
+            <h3>Mediation Case Study Submission</h3>
+            <p>Review your submitted assignment.</p>
+            <div style="background: #f9f9f9; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <p><strong>Feedback:</strong> Well-researched case study with clear examples.</p>
+            </div>
+            <button onclick="downloadSubmission('assignment1')">Download Submission</button>
+        </div>
+    </div>
+    <div id="submitAssignment2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitAssignment2')">&times;</span>
+            <h3>Negotiation Essay</h3>
+            <form>
+                <textarea placeholder="Enter your essay..." style="height: 150px;"></textarea>
+                <input type="file" multiple>
+                <button type="submit" onclick="submitTask('assignment2')">Submit Assignment</button>
+            </form>
+        </div>
+    </div>
+    <div id="submitAssignment3" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitAssignment3')">&times;</span>
+            <h3>Emotional Intelligence Report (Overdue)</h3>
+            <form>
+                <textarea placeholder="Enter your report..." style="height: 150px;"></textarea>
+                <input type="file" multiple>
+                <button type="submit" onclick="submitTask('assignment3')">Submit Late</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+            const icon = document.querySelector('.theme-toggle i');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+        }
+
+        // Role Switching
+        function switchRole() {
+            const role = document.getElementById('roleSelect').value;
+            const lecturerSection = document.getElementById('lecturerSection');
+            if (role === 'lecturer') {
+                lecturerSection.classList.add('active');
+            } else {
+                lecturerSection.classList.remove('active');
+            }
+        }
+
+        // Modal Functions
+        function openModal(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+        function openModuleModal(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        // Quiz Interaction
+        const selectedAnswers = {};
+        function selectOption(option, questionId) {
+            document.querySelectorAll(`.quiz-option[data-question="${questionId}"]`).forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            selectedAnswers[questionId] = option.textContent;
+        }
+        function submitQuiz() {
+            const correctAnswers = {
+                q1: 'A) Identifying the issue',
+                q2: 'A) Active listening',
+                q3: 'B) It fosters empathy',
+                q4: 'B) Lack of trust',
+                q5: 'B) Mutually beneficial solution'
+            };
+            let score = 0;
+            for (const [questionId, answer] of Object.entries(selectedAnswers)) {
+                if (answer === correctAnswers[questionId]) score++;
+            }
+            alert(`Quiz submitted! Score: ${score}/5`);
+        }
+
+        // Content Loader
+        function loadContent(value) {
+            alert(`Loading content: ${value}`);
+            // Implement backend logic to load specific content
+        }
+
+        // Chat Send
+        function sendMessage() {
+            alert('Message sent!');
+            // Implement backend logic for sending messages
+        }
+
+        // AI Course Assistant
+        function queryAI() {
+            const query = document.querySelector('.ai-input textarea').value;
+            const responseArea = document.getElementById('aiResponse');
+            // Simulated RAG response
+            let response = 'Processing query: ' + query + '\n';
+            if (query.toLowerCase().includes('progress')) {
+                response += 'Your progress: 55% (2/5 modules completed). Check the Tests, Exercises, Projects, and Assignments sections for task status.';
+            } else if (query.toLowerCase().includes('assignments') || query.toLowerCase().includes('tests') || query.toLowerCase().includes('exercises') || query.toLowerCase().includes('projects')) {
+                response += 'View your completed, upcoming, and overdue tasks in the respective sections below.';
+            } else {
+                response += 'Please refine your query for specific course progress, assignments, or resources.';
+            }
+            responseArea.textContent = response;
+            // Implement actual RAG API call
+        }
+
+        // Task Submission
+        function submitTask(taskId) {
+            alert(`Submitting ${taskId}...`);
+            // Implement backend logic for task submission
+        }
+
+        // Download Submission
+        function downloadSubmission(taskId) {
+            alert(`Downloading ${taskId} submission...`);
+            // Implement backend logic for downloading submission
+        }
+
+        // Mobile Menu
+        function toggleMobileMenu() {
+            const nav = document.querySelector('.nav');
+            nav.classList.toggle('active');
+        }
+
+        // Logout
+        function logout() {
+            alert('Logging out...');
+            // Implement logout logic
+        }
+
+        // Initialize
+        window.onload = function() {
+            switchRole();
+            document.querySelectorAll('.quiz-option').forEach((option, index) => {
+                const questionId = `q${Math.floor(index / 3) + 1}`;
+                option.setAttribute('data-question', questionId);
+            });
+        };
+    </script>
+</body>
+</html>
